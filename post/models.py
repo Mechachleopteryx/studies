@@ -6,10 +6,20 @@ class Post(models.Model):
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    tags = models.CharField(max_length=200, null=True, blank=True)
+    tags = models.CharField(
+        verbose_name=u'Related tags', max_length=200, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-modified']
+
+    def __unicode__(self):  # __str__ on Python 3
+        return self.title
 
 
 class Comment(models.Model):
     post = models.ForeignKey('post.Post')
     full_name = models.CharField(max_length=64)
-    value = models.TextField()
+    value = models.TextField(help_text=u'Please be nice')
+
+    def __unicode__(self):  # __str__ on Python 3
+        return u'{} by {}'.format(self.value[:10], self.full_name)
