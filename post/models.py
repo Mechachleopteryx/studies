@@ -10,6 +10,6 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey('post.Comment')
+    post = models.ForeignKey('post.Post')
     full_name = models.CharField(max_length=64)
     value = models.TextField()
