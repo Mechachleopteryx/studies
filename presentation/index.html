@@ -519,20 +519,61 @@ MultipleObjectsReturned: get() returned more than one Post - it returned 2!
                         </section>
                 </section>
 				<section>
-					<h2>Slides</h2>
+					<h2>Widoki</h2>
 					<p>
-						Not a coder? No problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slid.es" target="_blank">http://slid.es</a>.
-					</p>
+					    ...
+                    </p>
+				</section>
+                <section>
+					<h2>Template'y</h2>
+					<p>
+					    ...
+                    </p>
 				</section>
 
 				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
+                    <section>
+					<h2>Formularze</h2>
+                    </section>
+                    <section>
+						<h2>Po co nam automatyczne formularze?</h2>
+						<li>automatyczna walidacja</li>
+                        <li>spójność danych</li>
+                        <li>automatyczne parsowanie typów danych</li>
+                        <li>oszczędzają czas</li>
+                        <li>wysoka możliwość customizacji</li>
+                        <li>własne widgety</li>
+                        <li>mniejsza możliwość pomyłki</li>
+                        <li>pisanie ręcznie formularzy jest nudne</li>
+					</section>
+                    <section>
+					<h2>ModelForm</h2>
+                            <pre><code data-trim contenteditable>
+from django import forms
+
+from post.models import Post
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+                            </code></pre>
+                            <pre><code data-trim contenteditable>
+Python 2.7.5+ (default, Feb 27 2014, 19:37:08)
+[GCC 4.8.1] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from post.forms import PostForm
+>>> form = PostForm()
+>>> print form
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_title"&gt;Title:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_title" maxlength="64" name="title" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_content"&gt;Content:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;textarea cols="40" id="id_content" name="content" rows="10"&gt;
+&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_views"&gt;Views:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_views" name="views" type="number" /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_tags"&gt;Related tags:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_tags" maxlength="200" name="tags" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
+>>>
+                            </code></pre>
+					</section>
 				</section>
 
 				<section>
