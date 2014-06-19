@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'post'
+    'post',
+    'bootstrap3'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,5 +83,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+TEMPLATE_LOADERS = (
+    'django.template.loaders.app_directories.Loader',
+)
 

@@ -158,6 +158,18 @@ DATABASES = {
 					</code></pre>
 					</section>
                     <section>
+						<h2>requirements.pip</h2>
+                        <p>Wymagane pakiety przez naszą aplikacje:</p>
+                        <pre><code data-trim contenteditable>
+django
+pytz
+					</code></pre>
+                     <p>Instalacja wszystkich jednym poleceniem:</p>
+                     <pre><code data-trim contenteditable>
+pip install -r requirements.pip
+					</code></pre>
+					</section>
+                    <section>
 						<h2>Bazy danych</h2>
                         <li>krótko o bazach</li>
 					</section>
@@ -574,6 +586,211 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
                             </code></pre>
 					</section>
+                    <section>
+					<h2>Spróbujmy w praktyce</h2>
+						<p>Co będzie nam potrzebne?</p>
+                        <li>Formularz</li>
+						<li>Adres URL</li>
+                        <li>Widok CreateView</li>
+                        <li>Template</li>
+					</section>
+                    <section>
+					<h2>URL</h2>
+						<p>W głównym pliku urls dodajemy:</p>
+						<pre><code data-trim contenteditable>
+url(r'^post/', include('post.urls')),
+                        </code></pre>
+                        <p>W aplikacji post:</p>
+                        <pre><code data-trim contenteditable>
+urlpatterns = patterns(
+    '',
+    url(r'^add', PostCreateView.as_view(), name='add_post'),
+)
+                        </code></pre>
+					</section>
+                    <section>
+					<h2>Widok</h2>
+						<p>W aplikacji post, plik views.py:</p>
+						<pre><code data-trim contenteditable>
+from django.shortcuts import render
+from django.views.generic.edit import CreateView
+
+from post.forms import PostForm
+from post.models import Post
+
+
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm
+    success_url = '/post/add'
+    template_name = 'post/add.html'
+                        </code></pre>
+					</section>
+                    <section>
+					<h2>Template</h2>
+						<p>Sprawdzamy czy mamy w settings.py odpowiedni loader</p>
+						<pre><code data-trim contenteditable>
+TEMPLATE_LOADERS = (
+    'django.template.loaders.app_directories.Loader',
+)
+                        </code></pre>
+                        <p>Tworzymy strukture katalogów oraz plik z templatką post/templates/post/add.html</p>
+                        <p>Umieszczamy w nim nasz formularz:</p>
+                        <pre><code data-trim contenteditable>
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" />
+</form>
+                        </code></pre>
+					</section>
+                    <section>
+					<h2>Nikt nie lubi brzydkich formularzy</h2>
+						<p>Instalujemy django-bootstrap3 (aktualizujemy requriements.pip)</p>
+						<pre><code data-trim contenteditable>
+pip install django-bootstrap3
+                        </code></pre>
+                        <p>Dodajemy 'bootstrap3' do INSTALLED_APPS</p>
+                        <p>Modyfikujemy formularz, tworzymy plik <a href="">base.html</a>:</p>
+                        <pre><code data-trim contenteditable>
+{% extends 'post/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+    ModelForm
+{% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
+</form>
+
+{% endblock %}
+
+                        </code></pre>
+					</section>
+                    <section>
+					<h2>Widok listy</h2>
+                        <p>Dodajemy URL:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^', views.PostListView.as_view(), name='posts'),
+                        </code></pre>
+                        <p>Widok:</p>
+						<pre><code data-trim contenteditable>
+from django.views.generic.list import ListView
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'post/list.html'
+                        </code></pre>
+                        <p>Pobieramy <a href="">list.html</a></p>
+					    <p>Modyfikujemy CreateView o nowy success_url</p>
+
+						<pre><code data-trim contenteditable>
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post/add.html'
+
+    @property
+    def success_url(self):
+        return reverse('posts')
+                        </code></pre>
+
+                    </section>
+                    <section>
+					<h2>Edycja</h2>
+                        <p>Dodajemy URL:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^edit/(?P<pk>\d+)/$', views.PostEditView.as_view(), name='edit_post'),
+                        </code></pre>
+                        <p>Widok:</p>
+						<pre><code data-trim contenteditable>
+class PostEditView(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post/add.html'
+
+    @property
+    def success_url(self):
+        return reverse('posts')
+                        </code></pre>
+					    <p>Modyfikujemy list.html (dodajemy link do edycji)</p>
+
+						<pre><code data-trim contenteditable>
+<h2>
+    #{{ post.id }} - {{ post.title }}
+    <a href="{% url 'edit_post' post.id %}">[E]</a>
+</h2>
+                        </code></pre>
+
+                    </section>
+                    <section>
+					<h2>Dodawanie komentarzy</h2>
+                        <p>Dodajemy URL:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^add/comment/(?P<post_pk>\d+)/$', views.CommentCreateView.as_view(), name='edit_post'),
+                        </code></pre>
+                        <p>Widok:</p>
+						<pre><code data-trim contenteditable>
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'post/form.html'
+
+    @property
+    def success_url(self):
+        return reverse('posts')
+                        </code></pre>
+                    </section>
+                    <section>
+					<h2>Ustawianie domyslnych wartosci</h2>
+                        <pre><code data-trim contenteditable>
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'post/form.html'
+
+    @property
+    def success_url(self):
+        return reverse('posts')
+
+    def get_form_kwargs(self):
+        form_kwargs = super(CommentCreateView, self).get_form_kwargs()
+        post = Post.objects.get(pk=self.kwargs['post_pk'])
+        instance = Comment(post=post)
+        form_kwargs['instance'] = instance
+        return form_kwargs
+                        </code></pre>
+                    </section>
+                    <section>
+					<h2>Ukrywanie niepotrzebnego pola</h2>
+                        <pre><code data-trim contenteditable>
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ('post', )
+                        </code></pre>
+                    </section>
+                    <section>
+					<h2>Własne pola na modelu</h2>
+                        <pre><code data-trim contenteditable>
+@property
+def number_of_comments(self):
+    return self.comment_set.all().count()
+                        </code></pre>
+                        <p>Modyfikacja templatki</p>
+                        <pre><code data-trim contenteditable>
+<p>
+    <a href="{% url 'add_comment' post.id %}">
+        Comments ({{ post.number_of_comments }})
+    </a>
+</p>
+                        </code></pre>
+                    </section>
 				</section>
 
 				<section>

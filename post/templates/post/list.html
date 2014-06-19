@@ -1,0 +1,21 @@
+{% extends 'post/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+    Posts
+{% endblock %}
+
+{% block content %}
+
+{% for post in object_list %}
+<h2>
+    #{{ post.id }} - {{ post.title }}
+    <a href="{% url 'edit_post' post.id %}">[E]</a>
+</h2>
+{{ post.content }}
+<p>
+    <a href="{% url 'add_comment' post.id %}">Comments ({{ post.number_of_comments }})</a>
+</p>
+{% endfor %}
+
+{% endblock %}

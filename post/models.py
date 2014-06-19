@@ -11,10 +11,14 @@ class Post(models.Model):
         verbose_name=u'Related tags', max_length=200, null=True, blank=True)
 
     class Meta:
-        ordering = ['-modified']
+        ordering = ['-created']
 
     def __unicode__(self):  # __str__ on Python 3
         return u'{}...'.format(self.title[:10])
+
+    @property
+    def number_of_comments(self):
+        return self.comment_set.all().count()
 
 
 class Comment(models.Model):
