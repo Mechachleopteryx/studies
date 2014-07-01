@@ -5,7 +5,7 @@ class Post(models.Model):
     title = models.CharField(max_length=64)
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    views = models.IntegerField()
+    views = models.IntegerField(null=True, blank=True)
     modified = models.DateTimeField(auto_now=True)
     tags = models.CharField(
         verbose_name=u'Related tags', max_length=200, null=True, blank=True)

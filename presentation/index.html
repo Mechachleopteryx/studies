@@ -65,36 +65,62 @@
                     <section>
 						<h2>Agenda</h2>
                         <li>Wprowadzenie</li>
-                        <li>Django ORM</li>
+                        <li>Modele i ORM</li>
                         <li>Widoki</li>
                         <li>Szablony</li>
+                        <li>Piszemy prostego bloga</li>
 					</section>
                     <section>
-						<h2>Czym jest django?**/obrazek+dopisać</h2>
-                        <li>opensourcowy wysokopoziomowy framework napisany w Pythonie</li>
+						<h2>Czym jest django?</h2>
+                        <li>opensourcowy, wysokopoziomowy framework napisany w Pythonie</li>
                         <li>przypomina wzorzec projektowy MVC <br/>(Model-View-Controller)</li>
-                        <li>nazwa od pseudonimu belgijskiego gitarzysty Jean Reinhardta</li>
                         <li>rozwijany przez Django Software Foundation.</li>
 					</section>
                     <section>
 						<h2>Konkretnie</h2>
                         <li>bogata dokumentacja</li>
                         <li>bardzo szeroka oferta gotowych bibliotek</li>
-                        <li>własny ORM (Object-relational mapping)</li>
+                        <li>własny ORM (Object Relational Mapping)</li>
                         <li>automatyczny interfejs administratora</li>
                         <li>asynchroniczne lub harmonogramowe zadania w tle (django-celery)</li>
                         <li>system użytkowników (autoryzacja, rejestracja, zarządzanie profilem)</li>
                         <li>system migracji bazy danych</li>
                         <li>łatwość budowania wielojęzycznych aplikacji
                         <li>system formularzy</li>
+                        <li> i wiele innych.</li>
+
 					</section>
                     <section>
 						<h2>Struktura w teorii</h2>
-                        <li>Obrazek</li>
+                        <img src="http://media.twozniak.pl/structure.png">
+                        Autor: <a href="http://www.flickr.com/photos/jcroft">Jeff Croft</a>
 					</section>
                     <section>
-						<h2>Wygląd projektu w praktyce</h2>
-                        <li>Obrazek</li>
+						<h2>Struktura w praktyce</h2>
+                        <pre><code data-trim contenteditable>
+studies
+   blog
+       __init__.py
+       settings.py
+       urls.py
+       wsgi.py
+   post
+       __init__.py
+       admin.py
+       forms.py
+       models.py
+       tests.py
+       urls.py
+       views.py
+					</code></pre>
+					</section>
+                    <section>
+						<h2>Czego potrzebujemy?</h2>
+                        <li>Komputer z systemem Linux lub OS X</li>
+                        <li>Edytor tekstu (np: PyCharm lub Sublime Text)</li>
+                        <li>Python 2.7.x</li>
+                        <li>Django 1.6</li>
+                        <li>Virtualenv</li>
 					</section>
                     <section>
 						<h2>Tworzymy projekt</h2>
@@ -107,7 +133,7 @@ django-admin.py startproject blog
 					</section>
                     <section>
 						<h2>Projekt vs Aplikacja</h2>
-                        <li>Krótkie wyjaśnienie</li>
+                        <p><i>"Jaka jest różnica pomiędzy projektem a aplikacją? Aplikacja coś robi — jest nią np. system blogowy, rejestr danych publicznych lub prosta ankieta. Projekt jest kolekcją konfiguracji i aplikacji dla określonej strony www. Projekt może zawierać wiele aplikacji. Dana aplikacja może być w wielu projektach."</i> - django.pl</p>
                     </section>
                     <section>
 						<h2>manage.py</h2>
@@ -161,7 +187,7 @@ DATABASES = {
 						<h2>requirements.pip</h2>
                         <p>Wymagane pakiety przez naszą aplikacje:</p>
                         <pre><code data-trim contenteditable>
-django
+django==1.6
 pytz
 					</code></pre>
                      <p>Instalacja wszystkich jednym poleceniem:</p>
@@ -171,7 +197,9 @@ pip install -r requirements.pip
 					</section>
                     <section>
 						<h2>Bazy danych</h2>
-                        <li>krótko o bazach</li>
+                        <li>PostgreSQL, MySQL, SQLite, Oracle</li>
+                        <li>Możliwość użycia kilku baz danych w jednym projekcie</li>
+                        <li>dostępne dodatki takie jak ORM dla baz NoSQL (MongoDB, DynamoDB)</li>
 					</section>
                     <section>
 						<h2>Nasza Baza danych</h2>
@@ -208,13 +236,20 @@ INSTALLED_APPS = (
 					</section>
 					<section>
 						<h2>Czym jest model?</h2>
-						<li>klasa Pythona dziedzicząca po klasie Model z Django.</li>
+                        <li>Przedstawia logikę biznesową aplikacji</li>
+						<li>klasa Pythona dziedzicząca po klasie Model z Django</li>
                         <li>tworzy/mapuje tabelę w bazie</li>
                         <li>pola klasy odzwierciedlają kolumny w bazie danych</li>
+                                                <pre><code data-trim contenteditable>
+from django.db import models
+
+class Post(models.Model):
+    title = models.CharField(max_length=64)
+                        </code></pre>
 					</section>
 					<section>
-						<h2>Model Post i Komentarz</h2>
-<a href="https://github.com/tomaszwozniak/studies/blob/master/post/models.py">https://github.com/tomaszwozniak/studies/blob/master/post/models.py</a>
+						<h2>Napiszmy bloga</h2>
+<a href="https://raw.githubusercontent.com/tomaszwozniak/studies/master/post/models.py">https://github.com/tomaszwozniak/studies/blob/master/post/models.py</a>
                         <p>Unikajmy:</p>
                         <li>zarezerwowanych nazw dla Pythona np: id, type, pass, datetime, sum, list, dict</li>
                         <li>nazwy z podwójnym underscorem: foo__bar</li>
@@ -223,23 +258,26 @@ INSTALLED_APPS = (
 						<h2>Pola i ich argumenty</h2>
                         <pre><code data-trim contenteditable>
 # w polach typu CharField musimy podać maksymalną dlugość tekstu.
-models.CharField(max_length=64)
+title = models.CharField(max_length=64)
 # auto_now_add oznacza, że django automatycznie ustawi datę
 # pierwszego utworzenia obiektu.
-models.DateTimeField(auto_now_add=True)
+created = models.DateTimeField(auto_now_add=True)
 # w tym przypadku django zawsze zaaktualizuje datę
 # po modyfikacji obiektu.
-models.DateTimeField(auto_now=True)
+modified = models.DateTimeField(auto_now=True)
 # verbose_name - nazwa pola reprezentowana np. panelu admina.
 # null=True - zezwolenie na puste wartości.
 # blank=True - zezwolenie na puste wartości w formularzach.
-models.CharField(
+tags = models.CharField(
     verbose_name=u'Related tags', max_length=200, null=True, blank=True)
+                       </code></pre>
+                       <pre><code data-trim contenteditable>
 # Klucz obcy podany w formacie 'app.Model'
 models.ForeignKey('post.Post')
 # Tekst pomocy (wyświetlany jako podpowiedź np. panelu admina)
 models.TextField(help_text=u'Please be nice')
                         </code></pre>
+                        <a href="https://docs.djangoproject.com/en/dev/ref/models/fields/">https://docs.djangoproject.com/en/dev/ref/models/fields/</a>
 					</section>
 					<section>
 						<h2>syncdb i pierwszy user</h2>
@@ -277,7 +315,7 @@ python manage.py runserver
 					</section>
                     <section>
 						<h2>Rejestrujemy modele</h2>
-						<p>W pliku admin.py:</p>
+						<p>W katalogu aplikacji (post), w pliku admin.py:</p>
                         <pre><code data-trim contenteditable>
 from django.contrib import admin
 
@@ -286,6 +324,34 @@ from post.models import Post, Comment
 admin.site.register(Post)
 admin.site.register(Comment)
                         </code></pre>
+					</section>
+                    <section>
+						<h2>Metody unicode</h2>
+						<p>Poprawiamy format prezentacji obiektu</p>
+                        <pre><code data-trim contenteditable>
+def __unicode__(self):  # __str__ on Python 3
+    return u'{}...'.format(self.title[:10])
+                        </code></pre>
+                        <pre><code data-trim contenteditable>
+def __unicode__(self):  # __str__ on Python 3
+    return u'{} by {}'.format(self.value[:10], self.full_name)
+                        </code></pre>
+					</section>
+                    <section>
+						<h2>Zadanie</h2>
+<ol>
+<li>Stwórz nową aplikacje pt. subscription.</li>
+<li>Zarejestruj ja w panelu administratora i w settings.py.</li>
+<li>Stwórz model pt 'Mailing' z następującymi polami:</li>
+<p>- email (email field, wymagane),</p>
+<p>- expiry_date (datetime field, wymagane),</p>
+<p>- source (url field),</p>
+<p>- accepted (bool field),</p>
+<li>Napisz odpowiednie metody __unicode__:</li>
+<li>Zarejestruj model w panelu administratora (plik admin.py).</li>
+<li>Dodaj przykładowe dane.</li>
+</ol>
+<a href="https://docs.djangoproject.com/en/dev/ref/models/fields/#field-types">https://docs.djangoproject.com/en/dev/ref/models/fields/#field-types</a>
 					</section>
                     <section>
 						<h2>ORM</h2>
@@ -429,7 +495,7 @@ Pierwszy wpis
 >>> print Post.objects.all().order_by('title')
 [< Post: 3D Is a Du...>, < Post: Alienware ...>, …]
 # Pobranie wszystkich obiektów z bazny danych oraz
-# posortowanie ich po tytule rosnąco:
+# posortowanie ich po tytule malejąco:
 >>> print Post.objects.all().order_by('-title')
 [< Post: Why You Ne...>, < Post: WWDC stand...>, …]
 # Sortowanie po title, jeżeli znajdzie dwa takie
@@ -437,6 +503,7 @@ Pierwszy wpis
 >>> print Post.objects.all().order_by('title', 'created')
 [< Post: 3D Is a Du...>, < Post: Alienware ...>, …]
                             </code></pre>
+                        <a href="https://docs.djangoproject.com/en/dev/ref/models/querysets/">https://docs.djangoproject.com/en/dev/ref/models/querysets/</a>
                         </section>
                         <section>
                             <h2>Pobieranie pojedynczych obiektów</h2>
@@ -461,17 +528,17 @@ MultipleObjectsReturned: get() returned more than one Post - it returned 2!
                             <pre><code data-trim contenteditable>
 # Filtrowanie po treści pola:
 >>> print Post.objects.filter(title='Google')
-[< Post: Microsoft ...>]
+[< Post: Google ... >, < Post: Google... >]
 # Zawartości słowa w polu:
 >>> print Post.objects.filter(title__contains='Microsoft')
-[< Post: Microsoft ...>, < Post: Microsoft ...>, < Post: Introducti...>]
+[< Post: MongoDB no...>, < Post: Microsoft ...>]
 # Pole zaczynające się na dany string:
 >>> print Post.objects.filter(title__startswith='Microsoft')
-[< Post: Microsoft ...>, < Post: Microsoft ...>]
+[< Post: Microsoft ...>]
 # Pole zaczynające sie na dany string,
 # case insensitive (bez uwzględniania wielkości liter, domyślnie na SQLite)
 >>> print Post.objects.filter(title__startswith='microsoft')
-[< Post: Microsoft ...>, < Post: Microsoft ...>]
+[< Post: Microsoft ...>]
                             </code></pre>
                         </section>
                         <section>
@@ -479,18 +546,19 @@ MultipleObjectsReturned: get() returned more than one Post - it returned 2!
                             <pre><code data-trim contenteditable>
 # Zakres, range:
 >>> import datetime
->>> end_date = datetime.date(2014, 6, 5)
+>>> end_date = datetime.date(2014, 6, 23)
 >>> start_date = datetime.date(2014, 6, 1)
 >>> print Post.objects.filter(created__range=(start_date, end_date))
-[< Post: WWDC stand...>, < Post: Tizen deve...>, < Post: Samsung si...>]
+[< Post: Don't use ...>]
 # Year, month, day, czyli tez przedział ale prościej:
->>> Post.objects.filter(created__year=2014)
->>> Post.objects.filter(created__month=6)
->>> Post.objects.filter(created__day=1)
+print Post.objects.filter(created__year=2014)
+print Post.objects.filter(created__month=6)
+print Post.objects.filter(created__day=1)
 # Dzień tygodnia
->>> Post.objects.filter(created__week_day=2) #Poniedziałek
-# Możemy łączyć skróty, np wszystkie poniedziałki czerwca:
->>> Post.objects.filter(created__month=6, created__year=2014, week_day=2)
+print Post.objects.filter(created__week_day=2) #Poniedziałek
+# Możemy łączyć skróty, np wszystkie czwartki maja:
+print Post.objects.filter(created__month=5, created__year=2014,
+      created__week_day=5)
                             </code></pre>
                         </section>
                         <section>
@@ -499,8 +567,8 @@ MultipleObjectsReturned: get() returned more than one Post - it returned 2!
                             <p>Dobrze:</p>
                             <pre><code data-trim contenteditable>
 # Jedno zapytanie do bazy.
->>> posts = Post.objects.filter(id__in=[1, 2, 3])
-[< Post: Graph data...>, < Post: Google, in...>, < Post: Connect2.m...>]
+>>> print Post.objects.filter(id__in=[1, 2, 3])
+[< Post: Apple patc...>, < Post: Couchbase ...>, < Post: Avira Lice...>]
                             </code></pre>
                             Źle:
                             <pre><code data-trim contenteditable>
@@ -512,8 +580,8 @@ MultipleObjectsReturned: get() returned more than one Post - it returned 2!
                             <p>Możemy zastosować negacje:</p>
                             <pre><code data-trim contenteditable>
 # Jedno zapytanie do bazy.
->>> Post.objects.all().exclude(id__in=[1, 2, 3])
-[< Post: I love Goo...>, < Post: Google...>, < Post: Google...>,
+>>> print Post.objects.all().exclude(id__in=[1, 2, 3])
+[< Post: Madrid's p...>, < Post: The Top Fi...>, < Post: Portable S...>,
                             </code></pre>
                         </section>
                         <section>
@@ -776,7 +844,23 @@ class CommentForm(forms.ModelForm):
                         </code></pre>
                     </section>
                     <section>
-					<h2>Własne pola na modelu</h2>
+					<h2>Rozwijamy model o dodatkowe pola</h2>
+                        <pre><code data-trim contenteditable>
+@property
+def number_of_comments(self):
+    return self.comment_set.all().count()
+                        </code></pre>
+                        <p>Modyfikacja templatki</p>
+                        <pre><code data-trim contenteditable>
+<p>
+    <a href="{% url 'add_comment' post.id %}">
+        Comments ({{ post.number_of_comments }})
+    </a>
+</p>
+                        </code></pre>
+                    </section>
+                    <section>
+					<h2>Zawartość komentarzy</h2>
                         <pre><code data-trim contenteditable>
 @property
 def number_of_comments(self):

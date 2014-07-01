@@ -34,7 +34,7 @@ class PostEditView(UpdateView):
 class CommentCreateView(CreateView):
     model = Comment
     form_class = CommentForm
-    template_name = 'post/form.html'
+    template_name = 'post/comment_form.html'
 
     @property
     def success_url(self):
@@ -46,3 +46,11 @@ class CommentCreateView(CreateView):
         instance = Comment(post=post)
         form_kwargs['instance'] = instance
         return form_kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(CommentCreateView, self).get_context_data(**kwargs)
+        context['post'] = Post.objects.get(pk=self.kwargs['post_pk'])
+        context['comments'] = Comment.objects.filter(
+            post=context['post'])
+
+        return context
