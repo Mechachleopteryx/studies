@@ -9,7 +9,7 @@
 
 {% for post in object_list %}
     <h2>
-        #{{ post.id }} - {{ post.title }}
+        #{{ post.id }} - {{ post.title }} / {{ post.created|date:"D d M Y" }}
         <a href="{% url 'edit_post' post.id %}">[E]</a>
     </h2>
     {{ post.content }}
