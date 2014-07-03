@@ -14,7 +14,7 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
 
 		<!-- For syntax highlighting -->
@@ -58,9 +58,9 @@
                     <section>
 						<h2>O mnie</h2>
                         <p>Tomasz Woźniak / tomaszwozniak@stxnext.pl / twozniak.pl</p>
-						<p>Senior Python Deweloper, Technical Team Leader.</p>
-                        <p>Magister informatyki na UEP</p>
-                        <p>Ponad 4 letnie doświadczenie z językiem Python</p>
+						<p>Senior Python Developer, Technical Team Leader.</p>
+                        <p>Magister informatyki na UEP.</p>
+                        <p>Ponad 4 letnie doświadczenie z językiem Python.</p>
 					</section>
                     <section>
 						<h2>Agenda</h2>
@@ -71,22 +71,32 @@
                         <li>Piszemy prostego bloga</li>
 					</section>
                     <section>
+						<h2>Framework</h2>
+                        <li>platforma programistyczna,</li>
+                        <li>szkielet do budowy aplikacji,</li>
+                        <li>definiuje jej strukturę oraz mechanizm działania,</li>
+                        <li>dostarcza gotowe biblioteki,</li>
+                        <li>automatyzuje czynności,</li>
+                        <li>wymusza konwencje pracy.</li>
+					</section>
+                    <section>
 						<h2>Czym jest django?</h2>
-                        <li>opensourcowy, wysokopoziomowy framework napisany w Pythonie</li>
-                        <li>przypomina wzorzec projektowy MVC <br/>(Model-View-Controller)</li>
+                        <li>opensourcowy, wysokopoziomowy framework napisany w Pythonie,</li>
+                        <li>MTV - Model-Template-Controller</li>
+                        <li>przypomina wzorzec projektowy MVC <br/>(Model-View-Controller),</li>
                         <li>rozwijany przez Django Software Foundation.</li>
 					</section>
                     <section>
 						<h2>Konkretnie</h2>
-                        <li>bogata dokumentacja</li>
-                        <li>bardzo szeroka oferta gotowych bibliotek</li>
-                        <li>własny ORM (Object Relational Mapping)</li>
-                        <li>automatyczny interfejs administratora</li>
-                        <li>asynchroniczne lub harmonogramowe zadania w tle (django-celery)</li>
-                        <li>system użytkowników (autoryzacja, rejestracja, zarządzanie profilem)</li>
-                        <li>system migracji bazy danych</li>
-                        <li>łatwość budowania wielojęzycznych aplikacji
-                        <li>system formularzy</li>
+                        <li>bogata dokumentacja,</li>
+                        <li>bardzo szeroka oferta gotowych bibliotek,</li>
+                        <li>własny ORM (Object Relational Mapping),</li>
+                        <li>automatyczny interfejs administratora,</li>
+                        <li>asynchroniczne lub harmonogramowe zadania w tle (django-celery),</li>
+                        <li>system użytkowników (autoryzacja, rejestracja, zarządzanie profilem),</li>
+                        <li>system migracji bazy danych,</li>
+                        <li>łatwość budowania wielojęzycznych aplikacji,
+                        <li>system formularzy,</li>
                         <li> i wiele innych.</li>
 
 					</section>
@@ -116,11 +126,11 @@ studies
 					</section>
                     <section>
 						<h2>Czego potrzebujemy?</h2>
-                        <li>Komputer z systemem Linux lub OS X</li>
-                        <li>Edytor tekstu (np: PyCharm lub Sublime Text)</li>
-                        <li>Python 2.7.x</li>
-                        <li>Django 1.6</li>
-                        <li>Virtualenv</li>
+                        <li>Komputer z systemem Linux lub OS X,</li>
+                        <li>Edytor tekstu (np: PyCharm lub Sublime Text),</li>
+                        <li>Python 2.7.x,</li>
+                        <li>Django 1.6,</li>
+                        <li>Virtualenv.</li>
 					</section>
                     <section>
 						<h2>Tworzymy projekt</h2>
@@ -345,7 +355,7 @@ def __unicode__(self):  # __str__ on Python 3
 <li>Stwórz model pt 'Mailing' z następującymi polami:</li>
 <p>- email (email field, wymagane),</p>
 <p>- expiry_date (datetime field, wymagane),</p>
-<p>- source (url field),</p>
+<p>- source (url field, niewymagane),</p>
 <p>- accepted (bool field),</p>
 <li>Napisz odpowiednie metody __unicode__:</li>
 <li>Zarejestruj model w panelu administratora (plik admin.py).</li>
@@ -357,20 +367,20 @@ def __unicode__(self):  # __str__ on Python 3
 						<h2>ORM</h2>
 						<p>Mapowanie obiektowo-relacyjne (ang. Object-Relational Mapping ORM)</p>
                         <p>Zalety Django ORM:</p>
-                        <li>prostota, czytelność</li>
-                        <li>mniejsza szansa na pomyłkę</li>
-                        <li>duże możliwości</li>
-                        <li>łatwe poruszanie się pomiędzy relacjami</li>
-                        <li>znacznie przyspiesza pracę nad projektem</li>
-                        <li>w każdej chwili można zmienić bazę danych bez potrzeby zmian w kodzie</li>
+                        <li>prostota, czytelność,</li>
+                        <li>mniejsza szansa na pomyłkę,</li>
+                        <li>duże możliwości,</li>
+                        <li>łatwe poruszanie się pomiędzy relacjami,</li>
+                        <li>znacznie przyspiesza pracę nad projektem,</li>
+                        <li>w każdej chwili można zmienić bazę danych bez potrzeby zmian w kodzie.</li>
 					</section>
                     <section>
 						<h2>ORM</h2>
 						<p>Mapowanie obiektowo-relacyjne (ang. Object-Relational Mapping ORM)</p>
                         <p>Wady Django ORM:</p>
-                        <li>dodatkowa warstwa komunikacji (subtelnie wolniejszy)</li>
-                        <li>mało użyteczne dla skomplikowanych analitycznych zapytań</li>
-                        <li>programista zapomina / nie nauczy się SQL (wada?)</li>
+                        <li>dodatkowa warstwa komunikacji (subtelnie wolniejszy),</li>
+                        <li>mało użyteczne dla skomplikowanych analitycznych zapytań,</li>
+                        <li>programista zapomina / nie nauczy się SQL (wada?).</li>
 					</section>
                     <section>
 						<h2>Tworzenia tabeli w SQL</h2>
@@ -718,20 +728,6 @@ Type "help", "copyright", "credits" or "license" for more information.
                         <li>Template</li>
 					</section>
                     <section>
-					<h2>URL</h2>
-						<p>W głównym pliku urls dodajemy:</p>
-						<pre><code data-trim contenteditable>
-url(r'^post/', include('post.urls')),
-                        </code></pre>
-                        <p>W aplikacji post:</p>
-                        <pre><code data-trim contenteditable>
-urlpatterns = patterns(
-    '',
-    url(r'^add', PostCreateView.as_view(), name='add_post'),
-)
-                        </code></pre>
-					</section>
-                    <section>
 					<h2>Widok</h2>
 						<p>W aplikacji post, plik views.py:</p>
 						<pre><code data-trim contenteditable>
@@ -747,6 +743,24 @@ class PostCreateView(CreateView):
     form_class = PostForm
     success_url = '/post/add'
     template_name = 'post/add.html'
+                        </code></pre>
+					</section>
+                    <section>
+					<h2>URL</h2>
+						<p>W głównym pliku urls dodajemy:</p>
+						<pre><code data-trim contenteditable>
+url(r'^post/', include('post.urls')),
+                        </code></pre>
+                        <p>W aplikacji post, w pliku urls.py:</p>
+                        <pre><code data-trim contenteditable>
+from django.conf.urls import patterns, url
+
+from post import views
+
+urlpatterns = patterns(
+    '',
+    url(r'^add/$', views.PostCreateView.as_view(), name='add_post'),
+)
                         </code></pre>
 					</section>
                     <section>
@@ -774,7 +788,7 @@ TEMPLATE_LOADERS = (
 pip install django-bootstrap3
                         </code></pre>
                         <p>Dodajemy 'bootstrap3' do INSTALLED_APPS</p>
-                        <p>Modyfikujemy formularz, tworzymy plik <a href="">base.html</a>:</p>
+                        <p>Modyfikujemy formularz, tworzymy plik <a href="https://raw.githubusercontent.com/tomaszwozniak/studies/master/post/templates/post/base.html">base.html</a>:</p>
                         <pre><code data-trim contenteditable>
 {% extends 'post/base.html' %}
 {% load bootstrap3 %}
@@ -797,10 +811,6 @@ pip install django-bootstrap3
 					</section>
                     <section>
 					<h2>Widok listy</h2>
-                        <p>Dodajemy URL:</p>
-                        <pre><code data-trim contenteditable>
-url(r'^', views.PostListView.as_view(), name='posts'),
-                        </code></pre>
                         <p>Widok:</p>
 						<pre><code data-trim contenteditable>
 from django.views.generic.list import ListView
@@ -809,10 +819,16 @@ class PostListView(ListView):
     model = Post
     template_name = 'post/list.html'
                         </code></pre>
-                        <p>Pobieramy <a href="">list.html</a></p>
+                        <p>Dodajemy URL:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^$', views.PostListView.as_view(), name='posts'),
+                        </code></pre>
+                        <p>Pobieramy <a href="https://gist.githubusercontent.com/tomaszwozniak/47d78bde24be76eb5546/raw/01bb387f2cabacc6cab4b723f64b60af3c31acfe/gistfile1.txt">list.html</a></p>
 					    <p>Modyfikujemy CreateView o nowy success_url</p>
 
 						<pre><code data-trim contenteditable>
+from django.core.urlresolvers import reverse
+
 class PostCreateView(CreateView):
     model = Post
     form_class = PostForm
@@ -826,12 +842,10 @@ class PostCreateView(CreateView):
                     </section>
                     <section>
 					<h2>Edycja</h2>
-                        <p>Dodajemy URL:</p>
-                        <pre><code data-trim contenteditable>
-url(r'^edit/(?P<pk>\d+)/$', views.PostEditView.as_view(), name='edit_post'),
-                        </code></pre>
                         <p>Widok:</p>
 						<pre><code data-trim contenteditable>
+from django.views.generic.edit import CreateView, UpdateView
+
 class PostEditView(UpdateView):
     model = Post
     form_class = PostForm
@@ -840,6 +854,10 @@ class PostEditView(UpdateView):
     @property
     def success_url(self):
         return reverse('posts')
+                        </code></pre>
+                         <p>Dodajemy URL:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^edit/(?P<pk>\d+)/$', views.PostEditView.as_view(), name='edit_post'),
                         </code></pre>
 					    <p>Modyfikujemy list.html (dodajemy link do edycji)</p>
 
@@ -853,20 +871,23 @@ class PostEditView(UpdateView):
                     </section>
                     <section>
 					<h2>Dodawanie komentarzy</h2>
-                        <p>Dodajemy URL:</p>
-                        <pre><code data-trim contenteditable>
-url(r'^add/comment/(?P<post_pk>\d+)/$', views.CommentCreateView.as_view(), name='edit_post'),
-                        </code></pre>
                         <p>Widok:</p>
 						<pre><code data-trim contenteditable>
+from post.models import Post, Comment
+from post.forms import PostForm, CommentForm
+
 class CommentCreateView(CreateView):
     model = Comment
     form_class = CommentForm
-    template_name = 'post/form.html'
+    template_name = 'post/add.html'
 
     @property
     def success_url(self):
         return reverse('posts')
+                        </code></pre>
+                        <p>Dodajemy URL:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^add/comment/(?P<post_pk>\d+)/$', views.CommentCreateView.as_view(), name='add_comment'),
                         </code></pre>
                     </section>
                     <section>
@@ -915,22 +936,6 @@ def number_of_comments(self):
                         </code></pre>
                     </section>
                     <section>
-					<h2>Zawartość komentarzy</h2>
-                        <pre><code data-trim contenteditable>
-@property
-def number_of_comments(self):
-    return self.comment_set.all().count()
-                        </code></pre>
-                        <p>Modyfikacja templatki</p>
-                        <pre><code data-trim contenteditable>
-<p>
-    <a href="{% url 'add_comment' post.id %}">
-        Comments ({{ post.number_of_comments }})
-    </a>
-</p>
-                        </code></pre>
-                    </section>
-                    <section>
 					<h2>Wyświetlamy post razem z komentarzami</h2>
                         <p>Modyfikacja contextu z formularzem</p>
                         <pre><code data-trim contenteditable>
@@ -951,6 +956,7 @@ def get_context_data(self, **kwargs):
         Comments ({{ post.number_of_comments }})
     </a>
 </p>
+{% for comment in comments %}<p>{{ comment }}</p>{% endfor %}
                         </code></pre>
                     </section>
                     <section>
@@ -977,7 +983,12 @@ def clean_full_name(self):
     <li>W widoku dodawania komentarza zmień success_url na ten w którym się znajdujesz (zamiast do listy postów).</li>
     <p>- stwórz metodę get_success_url(self) w widoku</p>
     <p>- zwróć poprawny url za pomocą funkcji reverse i id posta pobranego z self.kwargs</p>
-    <li>Napisz validator który zabrani użycia słowa "polityka" w komentarzu.</li>
+</ol>
+                    </section>
+                    <section>
+                        <h2>Zadanie dla chętnych</h2>
+<ol>
+    <li>Napisz validator który zabroni użycia słowa "polityka" w komentarzu.</li>
     <li>Zmień url z /post/ na /.</li>
 </ol>
                     </section>

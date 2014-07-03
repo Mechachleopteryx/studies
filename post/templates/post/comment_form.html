@@ -7,17 +7,14 @@
 
 {% block content %}
 
-<h2>
-    #{{ post.id }} - {{ post.title }}
-</h2>
+<h2>#{{ post.id }} - {{ post.title }}</h2>
 {{ post.content }}
 <p>
-    <a href="{% url 'add_comment' post.id %}">Comments ({{ post.number_of_comments }})</a>
+    <a href="{% url 'add_comment' post.id %}">
+        Comments ({{ post.number_of_comments }})
+    </a>
 </p>
-
-{% for comment in comments %}
-    <p>{{ comment }}</p>
-{% endfor %}
+{% for comment in comments %}<p>{{ comment }}</p>{% endfor %}
 <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}

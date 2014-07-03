@@ -1,0 +1,5 @@
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_title"&gt;Title:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_title" maxlength="64" name="title" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_content"&gt;Content:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;textarea cols="40" id="id_content" name="content" rows="10"&gt;
+&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_views"&gt;Views:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_views" name="views" type="number" /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_tags"&gt;Related tags:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_tags" maxlength="200" name="tags" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
