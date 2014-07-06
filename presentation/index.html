@@ -532,7 +532,7 @@ DATABASES = {
     }
 }
                             </code></pre>
-                          <p>Wyłączamy aplikacje subscribe:</p>
+                          <p>Wyłączamy aplikacje subscribe</p>
                       </section>
                       <section>
                             <h2>Pobieranie zbiorów z bazy - Queryset</h2>
@@ -541,19 +541,19 @@ DATABASES = {
 >>> from post.models import Post, Comment
 # Pobranie wszystkich obiektów z bazy danych:
 >>> print Post.objects.all()
-[< Post: Vodafone: ...>, < Post: Skype for ...>, …]
+< Post: Breaking N...>, < Post: Breaking N...>, < Post: Madrid's p...>
 # Pobranie wszystkich obiektów z bazny danych oraz
 # posortowanie ich po tytule rosnąco:
 >>> print Post.objects.all().order_by('title')
-[< Post: 3D Is a Du...>, < Post: Alienware ...>, …]
+< Post: Apple Expa...>, < Post: Apple patc...>, < Post: Avira Lice...>
 # Pobranie wszystkich obiektów z bazny danych oraz
 # posortowanie ich po tytule malejąco:
 >>> print Post.objects.all().order_by('-title')
-[< Post: Why You Ne...>, < Post: WWDC stand...>, …]
+< Post: TrackingPo...>, < Post: The UPC ba...>, < Post: The Top Fi...>,
 # Sortowanie po title, jeżeli znajdzie dwa takie
 # same tytuły, następnym kryterium będzie data utworzenia:
 >>> print Post.objects.all().order_by('title', 'created')
-[< Post: 3D Is a Du...>, < Post: Alienware ...>, …]
+< Post: Apple Expa...>, < Post: Apple patc...>, < Post: Avira Lice...>
                             </code></pre>
                         <a href="https://docs.djangoproject.com/en/dev/ref/models/querysets/">https://docs.djangoproject.com/en/dev/ref/models/querysets/</a>
                         </section>
@@ -561,17 +561,17 @@ DATABASES = {
                             <h2>Pobieranie pojedynczych obiektów</h2>
                             <p>Dobrze</p>
                             <pre><code data-trim contenteditable>
->>> Post.objects.get(id=1)
-Apple will...
+>>> print Post.objects.get(id=1)
+Apple patc...
                             </code></pre>
                             <p>Źle</p>
                             <pre><code data-trim contenteditable>
->>> Post.objects.filter(id=1)[0]
-Apple will...
+>>> print Post.objects.filter(id=1)[0]
+Apple patc...
                             </code></pre>
                             <p>Metody get() używamy tylko wyłącznie jeżeli oczekujemy jednego obiektu w bazie danych, w przeciwnym wypadku ORM zwróci wyjątek:</p>
                             <pre><code data-trim contenteditable>
->>> Post.objects.get(title='Breaking news')
+>>> print Post.objects.get(title='Breaking News')
 MultipleObjectsReturned: get() returned more than one Post - it returned 2!
                             </code></pre>
                         </section>
@@ -583,14 +583,14 @@ MultipleObjectsReturned: get() returned more than one Post - it returned 2!
 [< Post: Google ... >, < Post: Google... >]
 # Zawartości słowa w polu:
 >>> print Post.objects.filter(title__contains='Microsoft')
-[< Post: MongoDB no...>, < Post: Microsoft ...>]
+[< Post: MongoDB no...>, < Post: Microsoft ...>, < Post: MongoDB no...>]
 # Pole zaczynające się na dany string:
 >>> print Post.objects.filter(title__startswith='Microsoft')
-[< Post: Microsoft ...>]
+[< Post: Microsoft ...>, < Post: Microsoft ...>]
 # Pole zaczynające sie na dany string,
 # case insensitive (bez uwzględniania wielkości liter, domyślnie na SQLite)
 >>> print Post.objects.filter(title__startswith='microsoft')
-[< Post: Microsoft ...>]
+[< Post: Microsoft ...>, < Post: Microsoft ...>]
                             </code></pre>
                         </section>
                         <section>
@@ -654,7 +654,7 @@ print Post.objects.filter(created__month=5, created__year=2014,
                             <h2>Zadanie</h2>
 <ol>
     <li>Wróć do poprzedniej bazy danych.</li>
-    <li>Włącz ponownie aplikacje subscribe.</li>
+    <li>Włącz ponownie aplikacje subscription.</li>
     <li>Za pomocą django shella utwórz obiekt ze swoim adresem email (reszta danych dowolna), przypisz go do zmiennej aby poznać jego numer id.</li>
     <li>Pobierz obiekt po jego numerze id.</li>
     <li>Zmień mu pole accepted na True i zapisz obiekt.</li>
@@ -789,45 +789,26 @@ TEMPLATE_LOADERS = (
 pip install django-bootstrap3
                         </code></pre>
                         <p>Dodajemy 'bootstrap3' do INSTALLED_APPS</p>
-                        <p>Modyfikujemy formularz, tworzymy plik <a href="https://raw.githubusercontent.com/tomaszwozniak/studies/master/post/templates/post/base.html">base.html</a>:</p>
-                        <pre><code data-trim contenteditable>
-{% extends 'post/base.html' %}
-{% load bootstrap3 %}
-
-{% block title %}
-    ModelForm
-{% endblock %}
-
-{% block content %}
-
-<form method="post">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
-</form>
-
-{% endblock %}
-
-                        </code></pre>
+                        <p>Modyfikujemy formularz <a href="https://gist.githubusercontent.com/tomaszwozniak/9ff47aa4152c78b4ca57/raw/cec97ef4d5b1929c43a9177589b43d2c4189d759/gistfile1.txt">add.html</a></p>
+                        <p>Tworzymy plik: <a href="https://raw.githubusercontent.com/tomaszwozniak/studies/master/post/templates/post/base.html">base.html</a>:</p>
 					</section>
                     <section>
 					<h2>Widok listy</h2>
-                        <p>Widok:</p>
 						<pre><code data-trim contenteditable>
+# w pliku post/views.py
 from django.views.generic.list import ListView
 
 class PostListView(ListView):
     model = Post
     template_name = 'post/list.html'
                         </code></pre>
-                        <p>Dodajemy URL:</p>
                         <pre><code data-trim contenteditable>
+# w pliku post/urls.py
 url(r'^$', views.PostListView.as_view(), name='posts'),
                         </code></pre>
                         <p>Pobieramy <a href="https://gist.githubusercontent.com/tomaszwozniak/47d78bde24be76eb5546/raw/01bb387f2cabacc6cab4b723f64b60af3c31acfe/gistfile1.txt">list.html</a></p>
-					    <p>Modyfikujemy CreateView o nowy success_url</p>
-
 						<pre><code data-trim contenteditable>
+# w pliku post/views.py modyfikujemy CreateView o nowy success_url
 from django.core.urlresolvers import reverse
 
 class PostCreateView(CreateView):
@@ -843,8 +824,8 @@ class PostCreateView(CreateView):
                     </section>
                     <section>
 					<h2>Edycja</h2>
-                        <p>Widok:</p>
 						<pre><code data-trim contenteditable>
+# w pliku post/views.py
 from django.views.generic.edit import CreateView, UpdateView
 
 class PostEditView(UpdateView):
@@ -856,13 +837,12 @@ class PostEditView(UpdateView):
     def success_url(self):
         return reverse('posts')
                         </code></pre>
-                         <p>Dodajemy URL:</p>
                         <pre><code data-trim contenteditable>
-url(r'^edit/(?P<pk>\d+)/$', views.PostEditView.as_view(), name='edit_post'),
+# w pliku post/urls.py
+url(r'^edit/(?P&lt;pk&gt;\d+)/$', views.PostEditView.as_view(), name='edit_post'),
                         </code></pre>
-					    <p>Modyfikujemy list.html (dodajemy link do edycji)</p>
-
 						<pre><code data-trim contenteditable>
+{# w pliku post/templates/post/list.html (dodajemy link do edycji) #}
 <h2>
     #{{ post.id }} - {{ post.title }}
     <a href="{% url 'edit_post' post.id %}">[E]</a>
@@ -888,7 +868,7 @@ class CommentCreateView(CreateView):
                         </code></pre>
                         <p>Dodajemy URL:</p>
                         <pre><code data-trim contenteditable>
-url(r'^add/comment/(?P<post_pk>\d+)/$', views.CommentCreateView.as_view(), name='add_comment'),
+url(r'^add/comment/(?P&lt;post_pk&gt;\d+)/$', views.CommentCreateView.as_view(), name='add_comment'),
                         </code></pre>
                     </section>
                     <section>
@@ -938,8 +918,10 @@ def number_of_comments(self):
                     </section>
                     <section>
 					<h2>Wyświetlamy post razem z komentarzami</h2>
-                        <p>Modyfikacja contextu z formularzem</p>
+                        <p></p>
                         <pre><code data-trim contenteditable>
+# w pliku post/views.py modyfikacja contextu z
+# formularzem (klasa CommentCreateView)
 def get_context_data(self, **kwargs):
     context = super(CommentCreateView, self).get_context_data(**kwargs)
     context['post'] = Post.objects.get(pk=self.kwargs['post_pk'])
@@ -948,8 +930,8 @@ def get_context_data(self, **kwargs):
 
     return context
                         </code></pre>
-                        <p>Modyfikacja templatki comment_form.html</p>
                         <pre><code data-trim contenteditable>
+{# Modyfikacja post/templates/post/comment_form.html #}
 <h2>#{{ post.id }} - {{ post.title }}</h2>
 {{ post.content }}
 <p>
