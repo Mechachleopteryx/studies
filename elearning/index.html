@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Django</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+        <link href='http://fonts.googleapis.com/css?family=Oswald&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Django</h1>
+					<h3>Framework webowy dla perfekcjonistów</h3>
+				</section>
+
+				<section>
+                    <section>
+                        <h2>Pierwsze kroki z Django</h2>
+
+                        <aside class="notes">
+                            Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+                        </aside>
+                    </section>
+                    <section>
+						<h2>O mnie</h2>
+                        <p>Tomasz Woźniak / tomaszwozniak@stxnext.pl</p>
+						<p>Senior Python Developer, Technical Team Leader.</p>
+                        <p>Magister informatyki na UEP.</p>
+                        <p>Ponad 4 letnie doświadczenie z językiem Python.</p>
+                        <p><a href="http://www.django.studies.twozniak.pl">http://www.django.studies.twozniak.pl</a></p>
+					</section>
+                    <section>
+						<h2>Agenda</h2>
+                        <li>Wprowadzenie</li>
+                        <li>Modele i ORM</li>
+                        <li>Widoki</li>
+                        <li>Szablony</li>
+                        <li>Piszemy prostego bloga</li>
+					</section>
+                    <section>
+						<h2>Framework</h2>
+                        <li>platforma programistyczna,</li>
+                        <li>szkielet do budowy aplikacji,</li>
+                        <li>definiuje jej strukturę oraz mechanizm działania,</li>
+                        <li>dostarcza gotowe biblioteki,</li>
+                        <li>automatyzuje czynności,</li>
+                        <li>wymusza konwencje pracy.</li>
+					</section>
+                    <section>
+						<h2>Czym jest django?</h2>
+                        <li>opensourcowy, wysokopoziomowy framework napisany w Pythonie,</li>
+                        <li>MTV - Model-Template-View</li>
+                        <li>przypomina wzorzec projektowy MVC <br/>(Model-View-Controller),</li>
+                        <li>rozwijany przez Django Software Foundation.</li>
+					</section>
+                    <section>
+						<h2>Konkretnie</h2>
+                        <li>bogata dokumentacja,</li>
+                        <li>bardzo szeroka oferta gotowych bibliotek,</li>
+                        <li>własny ORM (Object Relational Mapping),</li>
+                        <li>automatyczny interfejs administratora,</li>
+                        <li>asynchroniczne lub harmonogramowe zadania w tle (django-celery),</li>
+                        <li>system użytkowników (autoryzacja, rejestracja, zarządzanie profilem),</li>
+                        <li>system migracji bazy danych,</li>
+                        <li>łatwość budowania wielojęzycznych aplikacji,
+                        <li>system formularzy,</li>
+                        <li> i wiele innych.</li>
+
+					</section>
+                    <section>
+						<h2>Struktura w teorii</h2>
+                        <img src="http://media.twozniak.pl/structure.png">
+                        Autor: <a href="http://www.flickr.com/photos/jcroft">Jeff Croft</a>
+					</section>
+                    <section>
+						<h2>Struktura w praktyce</h2>
+                        (<a href="https://github.com/tomaszwozniak/studies">podgląd</a>)
+                        <pre><code data-trim contenteditable>
+blog
+   blog
+       __init__.py
+       settings.py < - główny plik konfiguracyjny django
+       urls.py < - główny plik z url'ami
+       wsgi.py < - plik wsgi służący do postawienia aplikacji na serwerze
+   post
+       __init__.py
+       admin.py
+       forms.py
+       models.py
+       tests.py
+       urls.py
+       views.py
+   manage.py < - plik zarządzejący poleceniami django
+					</code></pre>
+					</section>
+                    <section>
+						<h2>Czego potrzebujemy?</h2>
+                        <li>Komputer z systemem Linux lub OS X,</li>
+                        <li>Edytor tekstu (np: PyCharm lub Sublime Text),</li>
+                        <li>Python 2.7.x,</li>
+                        <li>Django 1.6,</li>
+                        <li>Virtualenv.</li>
+					</section>
+                    <section>
+						<h2>Tworzymy projekt</h2>
+                        <pre><code data-trim contenteditable>
+virtualenv env
+source env/bin/activate
+pip install django
+django-admin.py startproject blog
+					</code></pre>
+					</section>
+                    <section>
+						<h2>Projekt vs Aplikacja</h2>
+                        <p><i>"Jaka jest różnica pomiędzy projektem a aplikacją? Aplikacja coś robi — jest nią np. system blogowy, rejestr danych publicznych lub prosta ankieta. Projekt jest kolekcją konfiguracji i aplikacji dla określonej strony www. Projekt może zawierać wiele aplikacji. Dana aplikacja może być w wielu projektach."</i> - django.pl</p>
+                    </section>
+                    <section>
+						<h2>manage.py</h2>
+                        <p>Uruchamiamy serwer deweloperski:</p>
+                        <pre><code data-trim contenteditable>
+# Na standardowym porcie 8000
+python manage.py runserver
+# Na porcie 8080
+python manage.py runserver 0.0.0.0:8080
+# Wyświetlenie wszystkich komend
+python manage.py --help
+# Wyświetlenie pomocy dla konkretnej komendy
+python manage.py sql --help
+
+					    </code></pre>
+                        <p>Co będzie potrzebne na początek?</p>
+                        <pre><code data-trim contenteditable>
+# Tworzenie aplikacji
+python manage.py startapp nazwa_aplikacji
+# Konsola pythona z dostępem do django i całego projektu
+python manage.py shell
+# Tworzenie bazy danych na podstawie modeli
+python manage.py syncdb
+# Uruchamianie testów jednostkowych
+python manage.py test
+					    </code></pre>
+					</section>
+                    <section>
+						<h2>settings.py</h2>
+                        <pre><code data-trim contenteditable>
+# Tryb debugowania, domyślny tryb pracy developera, powinniśmy pamiętać
+# o wyłączeniu go przed wystawieniem kodu na produkcje.
+DEBUG = True
+# Działa tylko w przypadku trybu produkcyjnego (DEBUG = False)
+# Dostępne domeny na których ma działać nasza aplikacja.
+ALLOWED_HOSTS = []
+# Krotka z nazwą dostępnych aplikacji.
+INSTALLED_APPS = (
+    ...
+)
+# Ustawienia bazy danych.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'data.db'),
+    }
+}
+					</code></pre>
+					</section>
+                    <section>
+						<h2>requirements.pip</h2>
+                        <p>Wymagane pakiety przez naszą aplikacje:</p>
+                        <pre><code data-trim contenteditable>
+django==1.6
+pytz
+					</code></pre>
+                     <p>Instalacja wszystkich jednym poleceniem:</p>
+                     <pre><code data-trim contenteditable>
+pip install -r requirements.pip
+					</code></pre>
+					</section>
+                    <section>
+						<h2>Bazy danych</h2>
+                        <li>PostgreSQL, MySQL, SQLite, Oracle</li>
+                        <li>Możliwość użycia kilku baz danych w jednym projekcie</li>
+                        <li>dostępne dodatki takie jak ORM dla baz NoSQL (MongoDB, DynamoDB)</li>
+					</section>
+                    <section>
+						<h2>Nasza Baza danych</h2>
+                        <li>na potrzebę zajęć został wybrany sqlite3</li>
+                        <li>baza będzie przechowywana jako pojedynczy plik w projekcie, bez potrzeby instalacji dodatkowych usług w systemie</li>
+                        <li>sqliteman - prosta przeglądarka baz danych sqlite</li>
+                        <li>dzięki ORM budowa aplikacji będzie wyglądała identycznie jak na postgresql lub mysql</li>
+                        <li>zaleca się pracowanie na takiej samej bazie danych jaka ma być użyta na produkcji</li>
+					</section>
+                    <section>
+						<h2>Tworzymy aplikacje</h2>
+                        <pre><code data-trim contenteditable>
+python manage.py startapp post
+					</code></pre>
+                    <p>Włączamy ją w settings.py:</p>
+                    <pre><code data-trim contenteditable>
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'post'
+)
+					</code></pre>
+					</section>
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+						<h2>Modele i ORM</h2>
+					</section>
+					<section>
+						<h2>Czym jest model?</h2>
+                        <li>Przedstawia logikę biznesową aplikacji</li>
+						<li>klasa Pythona dziedzicząca po klasie Model z Django</li>
+                        <li>tworzy/mapuje tabelę w bazie</li>
+                        <li>pola klasy odzwierciedlają kolumny w bazie danych</li>
+                                                <pre><code data-trim contenteditable>
+from django.db import models
+
+class Post(models.Model):
+    title = models.CharField(max_length=64)
+                        </code></pre>
+					</section>
+                    <section>
+						<h2>Pola i ich argumenty</h2>
+                        <pre><code data-trim contenteditable>
+# w polach typu CharField musimy podać maksymalną dlugość tekstu.
+title = models.CharField(max_length=64)
+# auto_now_add oznacza, że django automatycznie ustawi datę
+# pierwszego utworzenia obiektu.
+created = models.DateTimeField(auto_now_add=True)
+# w tym przypadku django zawsze zaaktualizuje datę
+# po modyfikacji obiektu.
+modified = models.DateTimeField(auto_now=True)
+# verbose_name - nazwa pola reprezentowana np. panelu admina.
+# null=True - zezwolenie na puste wartości.
+# blank=True - zezwolenie na puste wartości w formularzach.
+tags = models.CharField(
+    verbose_name=u'Related tags', max_length=200, null=True, blank=True)
+                       </code></pre>
+                       <pre><code data-trim contenteditable>
+# Klucz obcy podany w formacie 'app.Model'
+models.ForeignKey('post.Post')
+# Tekst pomocy (wyświetlany jako podpowiedź np. panelu admina)
+models.TextField(help_text=u'Please be nice')
+                        </code></pre>
+                        <a href="https://docs.djangoproject.com/en/dev/ref/models/fields/">https://docs.djangoproject.com/en/dev/ref/models/fields/</a>
+					</section>
+					<section>
+						<h2>syncdb i pierwszy user</h2>
+						<p>Tworzenie bazy na podstawie modeli:</p>
+                    <pre><code data-trim contenteditable>
+python manage.py syncdb
+# Django zapyta czy utworzyć administratora, zgadzamy się
+You just installed Django's auth system, which
+means you don't have any superusers defined.
+Would you like to create one now? (yes/no): yes
+Username (leave blank to use 'wozmin'): admin
+Email address: admin@admin.pl
+Password:
+Password (again):
+Superuser created successfully.
+					</code></pre>
+                    <p>Jeżeli przez pomyłkę zrobiliśmy 'no':</p>
+                    <pre><code data-trim contenteditable>
+python manage.py createsuperuser
+					</code></pre>
+                        <p>Zobaczmy co jest w środku:</p>
+                    <pre><code data-trim contenteditable>
+sqliteman
+					</code></pre>
+					</section>
+                    <section>
+						<h2>Panel administratora</h2>
+						<p>Uruchamiamy serwer:</p>
+                    <pre><code data-trim contenteditable>
+python manage.py runserver
+					</code></pre>
+                        <p>Przechodzimy do <a href="http://127.0.0.1:8000/admin">http://127.0.0.1:8000/admin</a></p>
+                        <p class="fragment">Gdzie moje modele? </p>
+                        <p class="fragment">Musimy je najpierw zarejestrować w pliku admin.py</p>
+					</section>
+                    <section>
+						<h2>Rejestrujemy modele</h2>
+						<p>W katalogu aplikacji (post), w pliku admin.py:</p>
+                        <pre><code data-trim contenteditable>
+from django.contrib import admin
+
+from post.models import Post, Comment
+
+admin.site.register(Post)
+admin.site.register(Comment)
+                        </code></pre>
+					</section>
+                    <section>
+						<h2>Metody unicode</h2>
+						<p>Poprawiamy format prezentacji obiektu</p>
+                        <pre><code data-trim contenteditable>
+def __unicode__(self):  # __str__ on Python 3
+    return u'{}...'.format(self.title[:10])
+                        </code></pre>
+                        <pre><code data-trim contenteditable>
+def __unicode__(self):  # __str__ on Python 3
+    return u'{} by {}'.format(self.value[:10], self.full_name)
+                        </code></pre>
+					</section>
+                    <section>
+						<h2>ORM</h2>
+						<p>Mapowanie obiektowo-relacyjne (ang. Object-Relational Mapping ORM)</p>
+                        <p>Zalety Django ORM:</p>
+                        <li>prostota, czytelność,</li>
+                        <li>mniejsza szansa na pomyłkę,</li>
+                        <li>duże możliwości,</li>
+                        <li>łatwe poruszanie się pomiędzy relacjami,</li>
+                        <li>znacznie przyspiesza pracę nad projektem,</li>
+                        <li>w każdej chwili można zmienić bazę danych bez potrzeby zmian w kodzie.</li>
+					</section>
+                    <section>
+						<h2>ORM</h2>
+						<p>Mapowanie obiektowo-relacyjne (ang. Object-Relational Mapping ORM)</p>
+                        <p>Wady Django ORM:</p>
+                        <li>dodatkowa warstwa komunikacji (subtelnie wolniejszy),</li>
+                        <li>mało użyteczne dla skomplikowanych analitycznych zapytań,</li>
+                        <li>programista zapomina / nie nauczy się SQL (wada?).</li>
+					</section>
+                    <section>
+						<h2>Tworzenia tabeli w SQL</h2>
+                        <pre><code data-trim contenteditable>
+BEGIN;
+CREATE TABLE "post_post" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "title" varchar(64) NOT NULL,
+    "content" text NOT NULL,
+    "created" datetime NOT NULL,
+    "modified" datetime NOT NULL,
+    "tags" varchar(200)
+)
+;
+COMMIT;
+                    </code></pre>
+					</section>
+                    <section>
+						<h2>SQL i ORM prosty select</h2>
+                        <pre><code data-trim contenteditable>
+SELECT "post_post"."id", "post_post"."title", "post_post"."content",
+"post_post"."created", "post_post"."modified", "post_post"."tags"
+FROM "post_post" INNER JOIN "post_comment" ON (
+"post_post"."id" = "post_comment"."post_id" ) WHERE
+"post_comment"."id" = 1  ORDER BY "post_post"."modified" DESC
+                        </code></pre>
+                        <p>==</p>
+                        <pre><code data-trim contenteditable>
+                            Post.objects.filter(comment__id=1)
+                        </code></pre>
+					</section>
+                    <section>
+						<h2>Django shell</h2>
+                        <p>Przydatne narzędzie do debugowania, posłuży nam do ćwiczeń pracy z ORM.</p>
+                        <pre><code data-trim contenteditable>
+python manage.py shell
+Python 2.7.5+ (default, Feb 27 2014, 19:37:08)
+[GCC 4.8.1] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+# importujemy modele (klasy)
+>>> from post.models import Post, Comment
+# Pobieramy wszystkie obiekty z bazy
+>>> print Post.objects.all()
+[< Post: abc>, < Post: 8768>]
+# Tworzymy obiekt w bazie i przypisujemy go do zmiennej post
+>>> post = Post.objects.create(title='Post from djshell', content='abc')
+# Wyświetlamy obiekt post (Zwraca nam to co ustawiliśmy
+# w metodzie __unicode__)
+>>> print post
+Post from djshell
+                        </code></pre>
+					</section>
+                    <section>
+						<h2>Obiekt != Pozycja w bazie</h2>
+                        <p>w przypadku tworzenia obiektu w standardowy sposób za pomocą wywołania nazwy modelu (klasy), np: Post() obiekt nie pojawi się w bazie do momentu wywołania na nim metody save()</p>
+                        <pre><code data-trim contenteditable>
+# Tworzymy obiekt po "Pythonowemu"
+>>> post = Post()
+>>> post.title = 'Tytuł2'
+>>> post.content = 'Content2'
+# Próbuje wyświetlić jego id
+>>> print post.id
+None
+>>> post.save()
+>>> print post.id
+5
+                        </code></pre>
+					</section>
+                    <section>
+						<h2>Dodawanie obiektu z relacja</h2>
+                        <pre><code data-trim contenteditable>
+# Tworzymy obiekt przez ORM który automatycznie zapisze go w bazie
+>>> post = Post.objects.create(
+    title='Pierwszy wpis', content='Lorem ipsum...')
+>>> print post
+Pierwszy wpis
+# Próbujemy tego samego z komentarzem, zapominamy przy tym
+# o wymaganym kluczu obcym "Post"
+>>> comment = Comment.objects.create(
+    full_name='Jan Nowak', value='Super post')
+IntegrityError: NOT NULL constraint failed: post_comment.post_id
+# Poprawiamy swój błąd
+>>> comment = Comment.objects.create(
+    full_name='Jan Nowak', value='Super post', post=post)
+>>> print comment
+Super post by Jan Nowak
+                        </code></pre>
+					</section>
+
+                    <section>
+                            <h2>Dodawanie obiektu z relacja cd</h2>
+                            <pre><code data-trim contenteditable>
+# ciąg dalszy
+>>> print comment
+Super post by Jan Nowak
+# Wyświetlamy wartość 'value' z obiektu comment
+>>> print comment.value
+'Super post'
+# Odwołujemy się do obiektu 'post' przez obiekt 'comment' po kropce:
+>>> print comment.post
+Pierwszy wpis
+# Tym samym sposobem mamy dostęp do pozostałych danych z modelu 'post':
+>>> print comment.post.title
+'Test'
+# Wiemy już jak przejść przez klucz obcy z comment do post, poniżej
+# przykład jak wyświetlić wszystkie komentarze dla danego postu:
+>>> print post.comment_set.all()
+[< Comment: Super post by Jan Nowak>]
+                            </code></pre>
+                      </section>
+                      <section>
+                            <h2>Edycja obiektów</h2>
+                            <pre><code data-trim contenteditable>
+>>> post = Post.objects.get(pk=1)
+>>> print post
+Apple patc...
+>>> print post.views
+757
+>>> post.views = 1000
+>>> post.save()
+>>> print post.views
+1000
+                            </code></pre>
+                      </section>
+                      <section>
+                            <h2>Usuwanie obiektów</h2>
+                            <pre><code data-trim contenteditable>
+>>> post = Post.objects.get(pk=1)
+# Nie wykonujemy save(), ponieważ to przywróci obiekt
+# spowrotem do bazy pod tym samym kluczem.
+>>> post.delete()
+>>> post = Post.objects.get(pk=1)
+Traceback (most recent call last):
+...
+DoesNotExist: Post matching query does not exist.
+
+                            </code></pre>
+                      </section>
+                      <section>
+                            <h2>Pobieranie zbiorów z bazy - Queryset</h2>
+                            <pre><code data-trim contenteditable>
+# Importy
+>>> from post.models import Post, Comment
+# Pobranie wszystkich obiektów z bazy danych:
+>>> print Post.objects.all()
+< Post: Breaking N...>, < Post: Breaking N...>, < Post: Madrid's p...>
+# Pobranie wszystkich obiektów z bazny danych oraz
+# posortowanie ich po tytule rosnąco:
+>>> print Post.objects.all().order_by('title')
+< Post: Apple Expa...>, < Post: Apple patc...>, < Post: Avira Lice...>
+# Pobranie wszystkich obiektów z bazny danych oraz
+# posortowanie ich po tytule malejąco:
+>>> print Post.objects.all().order_by('-title')
+< Post: TrackingPo...>, < Post: The UPC ba...>, < Post: The Top Fi...>,
+# Sortowanie po title, jeżeli znajdzie dwa takie
+# same tytuły, następnym kryterium będzie data utworzenia:
+>>> print Post.objects.all().order_by('title', 'created')
+< Post: Apple Expa...>, < Post: Apple patc...>, < Post: Avira Lice...>
+                            </code></pre>
+                        <a href="https://docs.djangoproject.com/en/dev/ref/models/querysets/">https://docs.djangoproject.com/en/dev/ref/models/querysets/</a>
+                        </section>
+                        <section>
+                            <h2>Pobieranie pojedynczych obiektów</h2>
+                            <p>Dobrze</p>
+                            <pre><code data-trim contenteditable>
+>>> print Post.objects.get(id=1)
+Apple patc...
+                            </code></pre>
+                            <p>Źle</p>
+                            <pre><code data-trim contenteditable>
+>>> print Post.objects.filter(id=1)[0]
+Apple patc...
+                            </code></pre>
+                            <p>Metody get() używamy tylko wyłącznie jeżeli oczekujemy jednego obiektu w bazie danych, w przeciwnym wypadku ORM zwróci wyjątek:</p>
+                            <pre><code data-trim contenteditable>
+>>> print Post.objects.get(title='Breaking News')
+MultipleObjectsReturned: get() returned more than one Post - it returned 2!
+                            </code></pre>
+                        </section>
+                        <section>
+                            <h2>Queryset - Filtrowanie stringów</h2>
+                            <pre><code data-trim contenteditable>
+# Filtrowanie po treści pola:
+>>> print Post.objects.filter(title='Google')
+[< Post: Google ... >, < Post: Google... >]
+# Zawartości słowa w polu:
+>>> print Post.objects.filter(title__contains='Microsoft')
+[< Post: MongoDB no...>, < Post: Microsoft ...>, < Post: MongoDB no...>]
+# Pole zaczynające się na dany string:
+>>> print Post.objects.filter(title__startswith='Microsoft')
+[< Post: Microsoft ...>, < Post: Microsoft ...>]
+# Pole zaczynające sie na dany string,
+# case insensitive (bez uwzględniania wielkości liter, domyślnie na SQLite)
+>>> print Post.objects.filter(title__startswith='microsoft')
+[< Post: Microsoft ...>, < Post: Microsoft ...>]
+                            </code></pre>
+                        </section>
+                        <section>
+                            <h2>Queryset - Filtrowanie dat</h2>
+                            <pre><code data-trim contenteditable>
+# Zakres, range:
+>>> import datetime
+>>> end_date = datetime.date(2014, 6, 23)
+>>> start_date = datetime.date(2014, 6, 1)
+>>> print Post.objects.filter(created__range=(start_date, end_date))
+[< Post: Don't use ...>]
+# Year, month, day, czyli tez przedział ale prościej:
+print Post.objects.filter(created__year=2014)
+print Post.objects.filter(created__month=6)
+print Post.objects.filter(created__day=1)
+# Dzień tygodnia
+print Post.objects.filter(created__week_day=2) #Poniedziałek
+# Możemy łączyć skróty, np wszystkie czwartki maja:
+print Post.objects.filter(created__month=5, created__year=2014,
+      created__week_day=5)
+                            </code></pre>
+                        </section>
+                        <section>
+                            <h2>Queryset - filtrowanie zbiorem</h2>
+                            <p>Pobieranie obiektów z listy ID'ków</p>
+                            <p>Dobrze:</p>
+                            <pre><code data-trim contenteditable>
+# Jedno zapytanie do bazy.
+>>> print Post.objects.filter(id__in=[1, 2, 3])
+[< Post: Apple patc...>, < Post: Couchbase ...>, < Post: Avira Lice...>]
+                            </code></pre>
+                            Źle:
+                            <pre><code data-trim contenteditable>
+>>> ids = [1, 2, 3]
+>>> for id in ids:
+	post = Post.objects.get(id=id) # Trzy zapytania do bazy.
+	print post
+                            </code></pre>
+                            <p>Możemy zastosować negacje:</p>
+                            <pre><code data-trim contenteditable>
+# Jedno zapytanie do bazy.
+>>> print Post.objects.all().exclude(id__in=[1, 2, 3])
+[< Post: Madrid's p...>, < Post: The Top Fi...>, < Post: Portable S...>,
+                            </code></pre>
+                        </section>
+                        <section>
+                            <h2>Queryset - Funkcje agregacyjne</h2>
+                            <pre><code data-trim contenteditable>
+# Importy
+>>> from django.db.models import Avg, Max
+# Zliczanie średniej
+>>> Post.objects.all().aggregate(Avg('views'))
+{'views__avg': 507.0}
+# Max
+>>> Post.objects.all().aggregate(Max('views'))
+{'views__max': 996}
+                            </code></pre>
+                            <a href="https://docs.djangoproject.com/en/dev/topics/db/aggregation/">https://docs.djangoproject.com/en/dev/topics/db/aggregation/</a>
+                        </section>
+                </section>
+<!-- WIDOKI -->
+                <section>
+                    <section>
+                        <h2>Widoki</h2>
+                    </section>
+                    <section>
+                        <h2>Z czym to się je?</h2>
+                        <p>
+                            <li>URL (ang. Uniform Resource Locator)</li>
+                            <li>Widoki generyczne (ang. Generic Views)</li>
+                            <li>Django'we "skróty" (ang. shortcuts)</li>
+                            <li>Mixin'y</li>
+                            <li>Ajax i JSON</li>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>URL (ang. Uniform Resource Locator)</h2>
+                        <p class="fragment">
+                            Najczęściej kojarzony z adresem strony WWW.
+                        </p>
+                        <p class="fragment">
+                            Jak wygląda adres URL?
+                        </p>
+                        <p>
+                        <pre class="fragment"><code data-trim contenteditable>
+http://www.domena_strony.com/post/URL...
+|      |                    | 
+|      |                    ścieżka dostępu
+|      |                    do zasobu
+|      host (adres serwera)
+protokół
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>
+                            Jak będzie wyglądał adres URL, który wyświetli obrazek
+                            "pięknej" kobiety z brodą?
+                        </h2>
+                        <pre class="fragment"><code data-trim contenteditable>
+http://www.conchita.com/pictures/women_with_beard.jpg
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>
+                            Przykładowy plik z url'ami
+                        </h2>
+                        <pre><code data-trim contenteditable>
+from django.conf.urls import patterns, url
+
+urlpatterns = patterns('',
+    url(r'^articles/2003/$', 'news.views.special_case_2003'),
+    url(r'^articles/(\d{4})/$', 'news.views.year_archive',
+        name='year_archive'),
+    url(r'^articles/(\d{4})/(\d{2})/$', 'news.views.month_archive',
+        name='month_archive'),
+    url(r'^articles/(\d{4})/(\d{2})/(\d+)/$', 'news.views.article_detail',
+        name='article_detail'),
+)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Błąd 404 przy złym URL'u (włączony tryb debug)</h2>
+                        <img src="images/404_error.png">
+                    </section>
+                    <section>
+                        <h2>
+                            Przykładowy plik z include'm pozostałych url'i
+                        </h2>
+                        <pre><code data-trim contenteditable>
+from django.conf.urls import include, patterns, url
+
+urlpatterns = patterns('',
+    url(r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^community/', include('django_website.aggregator.urls')),
+    url(r'^contact/', include('django_website.contact.urls')),
+)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Więcej informacji:</h2>
+                        <p>
+                            <a href="http://www.djangobook.com/en/2.0/chapter08.html">http://www.djangobook.com/en/2.0/chapter08.html</a>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Widok generyczny - tworzenie</h2>
+                        <p>
+                            <ul>
+                                <li>Widok, który wyświetla formularz na potrzeby stworzenia obiektu</li>
+                                <li>Wystarczy podać model oraz pola</li>
+                                <li>Tworzymy template o ustalonej nazwie</li>
+                            </ul>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>CreateView</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.views.generic.edit import CreateView
+from myapp.models import Author
+
+class AuthorCreate(CreateView):
+    model = Author
+    fields = ['name']
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>myapp/author_form.html</h2>
+                        <p>
+                            <ul>
+                                <li>Do nazwy można zastosować parametr <i>template_name_suffix</i> (domyślnie ustawiony na <i>'_form'</i>).</li>
+                                <li>Nazwa jest tworzona przez połączenie nazwy <i>modelu</i> oraz <i>template_name_suffix</i>.</li>
+                            </ul>
+                            <pre><code data-trim contenteditable>
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Create" />
+</form>
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Widok generyczny - edycja</h2>
+                        <p>
+                            <ul>
+                                <li>Widok, który wyświetla formularz z danymi danego obiektu.</li>
+                                <li>Używany, aby zaktualizować dane obiektu.</li>
+                            </ul>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>UpdateView</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.views.generic.edit import UpdateView
+from myapp.models import Author
+
+class AuthorUpdate(UpdateView):
+    model = Author
+    fields = ['name']
+    template_name_suffix = '_update_form'
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>myapp/author_update_form.html</h2>
+                        <p>
+                            <ul>
+                                <li>Do nazwy można zastosować parametr <i>template_name_suffix</i> (domyślnie ustawiony na <i>'_form'</i>).</li>
+                                <li>Nazwa jest tworzona przez połączenie nazwy <i>modelu</i> oraz <i>template_name_suffix</i>.</li>
+                            </ul>
+                            <pre><code data-trim contenteditable>
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update" />
+</form>
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Widok generyczny - kasowanie</h2>
+                        <p>
+                            <ul>
+                                <li>Widok dzięki, któremu można usunąć obiekt z bazy danych.</li>
+                                <li>Umożliwia potwierdzenie usunięcia obiektu</li>
+                                <li>Trzeba podać parametr <i>'success_url'</i></li>
+                            </ul>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>DeleteView</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse_lazy
+from myapp.models import Author
+
+class AuthorDelete(DeleteView):
+    model = Author
+    success_url = reverse_lazy('author-list')
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>myapp/author_confirm_delete.html</h2>
+                        <p>
+                            <ul>
+                                <li>Do nazwy można zastosować parametr <i>template_name_suffix</i> (domyślnie ustawiony na <i>'_confirm_delete'</i>).</li>
+                                <li>Nazwa jest tworzona przez połączenie nazwy <i>modelu</i> oraz <i>template_name_suffix</i>.</li>
+                            </ul>
+                            <pre><code data-trim contenteditable>
+<form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <input type="submit" value="Confirm" />
+</form>
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Widok generyczny - szczegóły</h2>
+                        <ul>
+                            <li>Dzięki niemu możemy zobaczyć szczegóły obiektu (tzw. detail page)</li>
+                            <li>Wyświetli się tylko, jeżeli obiekt istnieje</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>DetailView</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.views.generic.detail import DetailView
+from django.utils import timezone
+
+from articles.models import Article
+
+class ArticleDetailView(DetailView):
+
+    model = Article
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDetailView, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>myapp/urls.py</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.conf.urls import patterns, url
+
+from article.views import ArticleDetailView
+
+urlpatterns = patterns('',
+    url(r'^(?P&lt;slug&gt;[-_\w]+)/$', ArticleDetailView.as_view(),
+        name='article-detail'),
+)
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>myapp/article_detail.html</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+<h1>{{ object.headline }}</h1>
+<p>{{ object.content }}</p>
+<p>Reporter: {{ object.reporter }}</p>
+<p>Published: {{ object.pub_date|date }}</p>
+<p>Date: {{ now|date }}</p>
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Widok generyczny - lista</h2>
+                    <ul>
+                            <li>Dzięki niemu możemy zobaczyć listę obiektów z danego modelu</li>
+                            <li>Można zdefiniować własne queryset</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>ListView</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.views.generic.list import ListView
+from django.utils import timezone
+
+from articles.models import Article
+
+class ArticleListView(ListView):
+
+    model = Article
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleListView, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>myapp/urls.py</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.conf.urls import patterns, url
+
+from article.views import ArticleListView
+
+urlpatterns = patterns('',
+    url(r'^$', ArticleListView.as_view(), name='article-list'),
+)
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>myapp/article_list.html</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+<h1>Articles</h1>
+<ul>
+{% for article in object_list %}
+    <li>{{ article.pub_date|date }} - {{ article.headline }}</li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Django'we "skróty" (ang. shortcuts)</h2>
+                    </section>
+                    <section>
+                        <h2>Co to takiego?</h2>
+                        <p>
+                            <ul>
+                                <li>Metody, które pozwalają uniknąć kłopotliwych sytuacji.</li>
+                                <li>Mniejsza ilość kodu, mniejsza ilość problemów.</li>
+                                <li>Nie trzeba powtarzać kodu, który już jest.</li>
+                            </ul>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>get_object_or_404(klass, *args, **kwargs)</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+from django.shortcuts import get_object_or_404
+
+def my_view(request):
+    my_object = get_object_or_404(MyModel, pk=1)
+                            </code></pre>
+                            lub:
+                            <pre><code data-trim contenteditable>
+from django.http import Http404
+
+def my_view(request):
+    try:
+        my_object = MyModel.objects.get(pk=1)
+    except MyModel.DoesNotExist:
+        raise Http404
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>render_to_response(template_name[, dictionary][, context_instance][, content_type])</h2>
+                            <p>
+                            <pre><code data-trim contenteditable>
+from django.shortcuts import render_to_response
+
+def my_view(request):
+    # View code here...
+    return render_to_response('myapp/index.html', {"foo": "bar"},
+        mimetype="application/xhtml+xml")
+                            </code></pre>
+                            lub:
+                            <pre><code data-trim contenteditable>
+from django.http import HttpResponse
+from django.template import Context, loader
+
+def my_view(request):
+    # View code here...
+    t = loader.get_template('myapp/index.html')
+    c = Context({'foo': 'bar'})
+    return HttpResponse(t.render(c),
+        content_type="application/xhtml+xml")
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>redirect(to[, permanent=False], *args, **kwargs)</h2>
+                            <p>
+                            <pre><code data-trim contenteditable>
+def my_view(request):
+    ...
+    return redirect('some-view-name', foo='bar')
+                            </code></pre>
+                            lub:
+                            <pre><code data-trim contenteditable>
+def my_view(request):
+    ...
+    return redirect('/some/url/')
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>JSON</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+import json
+
+from django.http import HttpResponse
+
+response_data = {}
+response_data['result'] = 'failed'
+response_data['message'] = 'You messed up'
+return HttpResponse(json.dumps(response_data), content_type="application/json")
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Błąd przy błednej nazwie szablonu lub jej braku</h2>
+                        <img src="images/template_not_exist.png">
+                    </section>
+                </section>
+
+<!-- TEMPLATE -->
+                <section>
+                    <section>
+                        <h2>Szablony (ang. Template)</h2>
+                    </section>
+                    <section>
+                        <h2>O czym powiemy?</h2>
+                        <p>
+                            <li>Budowa, dziedziczenie, zmienne</li>
+                            <li>Templatetag</li>
+                            <li>Filtry</li>
+                            <li>Własne templatetagi i filtry</li>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Budowa template'ów</h2>
+                        <p>
+                            Przykładowy szablony
+                            <pre><code data-trim contenteditable>
+<!DOCTYPE html>
+{% load staticfiles %}
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;{% block title %}{% endblock %}&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;link href="{% static 'css/custom.css' %}" rel="stylesheet" media="screen"&gt;
+    &lt;style&gt;
+    {% block style %}{% endblock %}
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+    {% block content %}{% endblock %}
+    ...
+  &lt;/body&gt;
+&lt;/html&gt;
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <p>
+                            <pre><code data-trim contenteditable>
+{% extends "base_generic.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ section.title }}</h1>
+
+{% for story in story_list %}
+<h2>
+  <a href="{{ story.get_absolute_url }}">
+    {{ story.headline|upper }}
+  </a>
+</h2>
+<p>{{ story.tease|truncatewords:"100" }}</p>
+{% endfor %}
+{% endblock %}
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Dziedziczenie</h2>
+                    </section>
+                    <section>
+                        <h2>extends</h2>
+                        <p>
+                            Stosujemy w przypadku, gdy chcemy rozszerzyć jeden szablon poprzez drugi
+                            <pre><code data-trim contenteditable>
+"base_generic.html"
+&uArr;  &uArr;  &uArr;  &uArr;  &uArr;  &uArr;
+"my_own_view.html"
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>include</h2>
+                        <p>
+                            Stosujemy w przypadku, gdy w jednym szablonie, chcemy wczytać inny szablon
+                        <pre><code data-trim contenteditable>
+{% include template_name %}
+                        </code></pre>
+                        W której mamy np.:
+                        <pre><code data-trim contenteditable>
+{{ greeting }}, {{ person|default:"friend" }}!
+                        </code></pre>
+                        Można też przekazać parametry
+                        <pre><code data-trim contenteditable>
+{% include "name_snippet.html" with person="Jane" greeting="Hello" %}
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Zmienne</h2>
+                    </section>
+                    <section>
+                        <h2>Wyświetlanie zmiennych</h2>
+                        <p>
+                            Aby wyświetlić zmienną/obiekt należy umieścić jej nazwę w podwójnych nawiasach wąsiastych.
+                            <pre><code data-trim contenteditable>
+{{ nazwa_zmiennej }}
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Dostęp do atrybutów obiektu</h2>
+                        <p>
+                            W templatach istenieje możliwość, aby wyświetlić atrybut obiektu. Robimy to w taki sam sposób jak wyświetlanie atrybutu dict:
+                            <pre><code data-trim contenteditable>
+{{ author.firstname }} {{ author.lastname }}
+                            </code></pre>
+                            W taki sam sposób możemy skorzystać z property.
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Templatetag</h2>
+                    </section>
+                    <section>
+                        <h2>Co to jest templatetag?</h2>
+                        <p>
+                            Funkcje/metody wykonywane podczas renderowania szablonów.
+                            Zbudowane z słowa kluczowego zamieszczonego w {% %} i parametr/obiekt na którym ma być wykonany.
+                            <pre><code data-trim contenteditable>
+{% if somevar != "x" %}
+    Something here if true
+{% else %}
+    Something other
+{% endif %}
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Wbudowane templatetag'i</h2>
+                        <p>
+                            Templatetag warunkowy
+                            <pre><code data-trim contenteditable>
+{% if condition %}
+    case 1
+{% else %}
+    case 2
+{% endif %}
+                            </code></pre>
+                        </p>
+                        Templatetag do generowania url'i
+                        <p>
+                            <pre><code data-trim contenteditable>
+{% url var1 var2 %}
+                            </code></pre>
+                        </p>
+                        Templatetag pętli for
+                        <p>
+                            <pre><code data-trim contenteditable>
+{% for item in items_list %}
+    Something with item
+{% endfor %}
+                            </code></pre>
+                        </p>
+                        Templatetag do csrf tokena przy formularzach
+                        <p>
+                            <pre><code data-trim contenteditable>
+{% csrf_token %}
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Filtry</h2>
+                    </section>
+                    <section>
+                        <h2>Jak używać?</h2>
+                        <p>
+                            Filtry są używane na obiekcie, który ma być wyrenderowany, używany w {{ }} oraz za |.
+                            Występują także filtry, którym można podać parametr, który jest opcjonalny przy filtrach.
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Przykłady:</h2>
+                        <p>
+                            Obcinanie znaków
+                            <pre><code data-trim contenteditable>
+{{ value|truncatechars:9 }} = "Joel is a slug" => "Joel i..."
+                            </code></pre>
+                        </p>
+                        Obcinanie wyrazów
+                        <p>
+                            <pre><code data-trim contenteditable>
+{{ value|truncatewords:2 }} = "Joel is a slug" => "Joel is ..."
+                            </code></pre>
+                        </p>
+                        YesNo filtr (zamiast if)
+                        <p>
+                            <pre><code data-trim contenteditable>
+{{ value|yesno:"yeah,no,maybe" }}
+                            </code></pre>
+                        </p>
+                        Tworzenie tytułu
+                        <p>
+                            <pre><code data-trim contenteditable>
+{{ value|title }} = "my FIRST post" => "My First Post"
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Date</h2>
+                        <p>
+                            Daty są bardzo często wykorzystywane. Do wyświetlania, formatowania dat, aby były wyświetlone tak jak chcemy używany filtra date.
+                            Filtr date przyjmuje parametry podobne do funkcji PHP'owej date().<br/>
+                        </p>
+                    </section>
+                    <section>
+                        <p>
+Parsowanie daty z podaniem w jaki sposób:
+                            <pre><code data-trim contenteditable>
+{{ value|date:"D d M Y" }}
+                            </code></pre>
+                        </p>
+                        <p>
+Przy ustawionym USE_L10N na True:
+                            <pre><code data-trim contenteditable>
+{{ value|date:"SHORT_DATE_FORMAT" }}
+                            </code></pre>
+                        </p>
+                        <p>
+Bez dodania parametrów, django użyje DATE_FORMAT z settings.py
+                            <pre><code data-trim contenteditable>
+{{ value|date }}
+                            </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Static</h2>
+                        <p>
+                            <pre><code data-trim contenteditable>
+{% load static %}
+{% static "images/hi.jpg" as myphoto %}
+<img src="{{ myphoto }}"></img>
+                            </code></pre>
+                        </p>
+                        <p>
+                            Więcej na temat templatetag'ów i filtrów można znaleźć w dokumentacji.
+<a href="https://docs.djangoproject.com/en/1.6/ref/templates/builtins/#std:templatetag-include">
+https://docs.djangoproject.com/en/1.6/ref/templates/builtins/...</a>
+                        </p>
+                    </section>
+                </section>
+
+				<section>
+                    <section>
+					<h2>Formularze</h2>
+                    </section>
+                    <section>
+						<h2>Po co nam automatyczne formularze?</h2>
+						<li>automatyczna walidacja</li>
+                        <li>spójność danych</li>
+                        <li>automatyczne parsowanie typów danych</li>
+                        <li>oszczędzają czas</li>
+                        <li>wysoka możliwość customizacji</li>
+                        <li>własne widgety</li>
+                        <li>mniejsza możliwość pomyłki</li>
+                        <li>pisanie ręcznie formularzy jest nudne</li>
+					</section>
+                    <section>
+					<h2>ModelForm</h2>
+                            <pre><code data-trim contenteditable>
+from django import forms
+
+from post.models import Post
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+                            </code></pre>
+                            <pre><code data-trim contenteditable>
+Python 2.7.5+ (default, Feb 27 2014, 19:37:08)
+[GCC 4.8.1] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from post.forms import PostForm
+>>> form = PostForm()
+>>> print form
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_title"&gt;Title:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_title" maxlength="64" name="title" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_content"&gt;Content:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;textarea cols="40" id="id_content" name="content" rows="10"&gt;
+&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_views"&gt;Views:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_views" name="views" type="number" /&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;&lt;label for="id_tags"&gt;Related tags:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_tags" maxlength="200" name="tags" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
+>>>
+                            </code></pre>
+					</section>
+				</section>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
