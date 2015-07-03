@@ -6,6 +6,7 @@ from post.models import Post, Comment
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
+        exclude = ('views',)
 
 
 class CommentForm(forms.ModelForm):

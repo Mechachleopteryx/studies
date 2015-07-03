@@ -13,18 +13,12 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created']
 
-    def __unicode__(self):  # __str__ on Python 3
-        return u'{}...'.format(self.title[:10])
-
     @property
     def number_of_comments(self):
-        return self.comment_set.all().count()
+        return self.comment_set.count()
 
 
 class Comment(models.Model):
     post = models.ForeignKey('post.Post')
     full_name = models.CharField(max_length=64)
     value = models.TextField(help_text=u'Please be nice')
-
-    def __unicode__(self):  # __str__ on Python 3
-        return u'{} by {}'.format(self.value[:10], self.full_name)

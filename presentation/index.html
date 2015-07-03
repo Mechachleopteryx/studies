@@ -246,7 +246,8 @@ INSTALLED_APPS = (
                     <section>
 						<h2>Tworzymy bazę oraz superusera</h2>
                         <pre><code data-trim contenteditable>
-python manage.py syncdb
+python manage.py migrate
+python manage.py createsuperuser
 					</code></pre>
 					</section>
 				</section>
@@ -322,9 +323,9 @@ python manage.py migrate
 						<h2>Panel administratora</h2>
 						<p>Uruchamiamy serwer:</p>
                     <pre><code data-trim contenteditable>
-python manage.py runserver
+python manage.py runserver 0.0.0.0:8080
 					</code></pre>
-                        <p>Przechodzimy do <a href="http://127.0.0.1:8000/admin">http://127.0.0.1:8000/admin</a></p>
+                        <p>Przechodzimy do adresu który pojawi się w podpowiedzi c9
                         <p class="fragment">Gdzie moje modele? </p>
                         <p class="fragment">Musimy je najpierw zarejestrować w pliku admin.py</p>
 					</section>
@@ -805,7 +806,7 @@ url(r'^json$', views.json, name='json'),
 
                     <section>
                         <h2>Sprawdźmy w praktyce</h2>
-                        https://demo-project-tomaszwozniak.c9.io/?a=test
+                        https://TWOJADRES.c9.io/?a=test
                         <pre><code data-trim contenteditable>
 def home(request):
     return HttpResponse(
@@ -814,8 +815,8 @@ def home(request):
         Wartosc zmiennej GET["a"]: {}<br/>
         HTTP USER AGENT: {}
         """.format(
-            request.GET.get('a'),
             request.user,
+            request.GET.get('a'),
             request.META['HTTP_USER_AGENT']
             ))
                         </code></pre>
@@ -907,7 +908,7 @@ def home(request):
 </code></pre>
 
 <pre><code data-trim contenteditable>
-{{ blah.0 }}
+{{ blah.0 }}<br/>
 {{ blah.1 }}
 </code></pre>
 
@@ -936,7 +937,7 @@ def home(request):
 
 <pre><code data-trim contenteditable>
 {% for item in list_ %}
-    {{ item }}
+    - {{ item }}</br>
 {% endfor %}
 </code></pre>
                     </section>
@@ -946,8 +947,8 @@ def home(request):
 <pre><code data-trim contenteditable>
 def home(request):
     dict_ = {
-        '1': 'foo'
-        '2': 'bar':
+        '1': 'foo',
+        '2': 'bar',
     }
     return render_to_response('home.html', {'dict_': dict_})
 </code></pre>
@@ -1171,6 +1172,7 @@ https://docs.djangoproject.com/en/1.6/ref/templates/builtins/...</a>
 					</section>
                     <section>
 					<h2>ModelForm</h2>
+                    w katalogu post tworzymy plik forms.py
                             <pre><code data-trim contenteditable>
 from django import forms
 
@@ -1180,7 +1182,10 @@ from post.models import Post
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
+        exclude = ('views',)
+        # fields = (...)
                             </code></pre>
+                   Generowanie formularza można sprawdzić w shellu (python manage.py shell)
                             <pre><code data-trim contenteditable>
 Python 2.7.5+ (default, Feb 27 2014, 19:37:08)
 [GCC 4.8.1] on linux2
@@ -1189,12 +1194,6 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> from post.forms import PostForm
 >>> form = PostForm()
 >>> print form
-&lt;tr&gt;&lt;th&gt;&lt;label for="id_title"&gt;Title:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_title" maxlength="64" name="title" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;th&gt;&lt;label for="id_content"&gt;Content:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;textarea cols="40" id="id_content" name="content" rows="10"&gt;
-&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;th&gt;&lt;label for="id_views"&gt;Views:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_views" name="views" type="number" /&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;th&gt;&lt;label for="id_tags"&gt;Related tags:&lt;/label&gt;&lt;/th&gt;&lt;td&gt;&lt;input id="id_tags" maxlength="200" name="tags" type="text" /&gt;&lt;/td&gt;&lt;/tr&gt;
->>>
                             </code></pre>
 					</section>
                     <section>
