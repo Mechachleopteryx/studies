@@ -13,10 +13,6 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created']
 
-    @property
-    def number_of_comments(self):
-        return self.comment_set.count()
-
 
 class Comment(models.Model):
     post = models.ForeignKey('post.Post')
