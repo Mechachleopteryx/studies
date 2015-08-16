@@ -1452,6 +1452,243 @@ def clean_full_name(self):
 </ol>
                     </section>
 				</section>
+                <section>
+                     <section>
+                        <h2>Użytkownicy</h2>
+                    </section>
+                    <section>
+                        <h2>Przypomnienie</h2>
+                        <p>Link do gotowego projektu blog którego robiliśmy na poprzednich zajęciach:</p>
+                    </section>
+                    <section>
+                        <h2>Przydatne komendy</h2>
+                                                <p>Wirtualne środowisko (wykonujemy w bashu)</p>
+                        <pre><code data-trim contenteditable>
+virtualenv env # tylko raz
+source env/bin/activate # za każdym razem w nowej zakładce !!!
+                        </code></pre>
+                        <p>Wchodzimy do projektu oraz instalujemy zależności</p>
+                                                <pre><code data-trim contenteditable>
+co studies
+pip install -r requirements.pip
+                        </code></pre>
+                        <p>Uruchamiamy serwer (również jak nam padnie)</p>
+                        <pre><code data-trim contenteditable>
+python manage.py runserver 0.0.0.0:8080
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Nowy moduł dla porządku</h2>
+                        <p>Tworzymy nową aplikacje ...</p>
+                        <pre><code data-trim contenteditable>
+python manage.py startapp users
+                        </code></pre>
+                        <p>... oraz rejestrujemy ją w pliku settings.py</p>
+                    </section>
+                    <section>
+                        <h2>Dodajemy formularz rejestracji</h2>
+                        <p>Importujemy formularz, klase User oraz widok Create</p>
+                        <pre><code data-trim contenteditable>
+from django.views.generic.edit import CreateView
+from django.contrib.auth.forms import UserCreationForm
+from django.core.urlresolvers import reverse_lazy
+                        </code></pre>
+                        <p>Tworzymy własny widok</p>
+                        <pre><code data-trim contenteditable>
+class UserCreateView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('posts')
+    template_name = 'form.html'
+                        </code></pre>
+                         <p>Tworzymy templatkę 'form.html' w głównym katalogu 'templates'</p>
+                        <pre><code data-trim contenteditable>
+https://gist.github.com/tomaszwozniak/c5a11468e99084ea5cf4
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Tworzymy plik urlami</h2>
+                        <p>Tworzymy plik urls.py w katalogu users</p>
+                        <pre><code data-trim contenteditable>
+from django.conf.urls import patterns, url
+
+from users import views
+
+urlpatterns = patterns(
+    '',
+    url(r'^create/$', views.UserCreateView.as_view(), name='create_user'),
+)
+                        </code></pre>
+                        <p>Rejestrujemy go głównym urls (blog/urls.py)</p>
+                        <pre><code data-trim contenteditable>
+...
+url(r'^user/', include('users.urls')),
+...
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Rozszerzamy formularz</h2>
+                        <p>Tworzymy plik forms.py w katalogu users</p>
+                        <pre><code data-trim contenteditable>
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+
+class CreateUserForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+                        </code></pre>
+                        <p>Modyfikujemy widok oraz usuwamy zbędne importy</p>
+                        <pre><code data-trim contenteditable>
+from users.forms import CreateUserForm
+
+class UserCreateView(CreateView):
+    form_class = CreateUserForm
+    success_url = reverse_lazy('posts')
+    template_name = 'form.html'
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Dodajemy link do menu</h2>
+                        <p>W pliku templates/menu.html zmieniamy blok ul</p>
+                        <pre><code data-trim contenteditable>
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
+</ul>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Logowanie</h2>
+                        <p>W users/urls.py importujemy wbudowany moduł widoków django</p>
+                        <pre><code data-trim contenteditable>
+from django.contrib.auth import views as auth_views
+                        </code></pre>
+                        <p>oraz rejestrujemy adres logowania (dodajemy go pod pozycją create)</p>
+                        <pre><code data-trim contenteditable>
+    url(r'^login/$', auth_views.login,
+        {'template_name': 'form.html'}, name='login'),
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Dodajemy link do menu</h2>
+                        <p>W pliku templates/menu.html dodajemy link do logowania</p>
+                        <pre><code data-trim contenteditable>
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
+    <li><a href="{% url 'login' %}">Logowanie</a></li>
+</ul>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Context processor</h2>
+                        - globalne dodawanie zmiennych do templatek
+                    </section>
+                     <section>
+                        <h2>Dodajemy context processor do settingsów</h2>
+                        <pre><code data-trim contenteditable>
+...
+            'context_processors': [
+                'django.core.context_processors.request',
+...
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Wyświetlamy imię zalogowanego usera</h2>
+                        W templates/menu.html dodajemy:
+                        <pre><code data-trim contenteditable>
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="#">{{ request.user }}</a></li>
+    <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
+    <li><a href="{% url 'login' %}">Logowanie</a></li>
+</ul>
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Wyloguj</h2>
+                        W users/urls.py dodajemy:
+                        <pre><code data-trim contenteditable>
+...
+url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+...
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Porządkujemy menu</h2>
+                        <p>W pliku templates/menu.html dodajemy link do wylogowania. Ukrywamy linki w zależności od potrzeby</p>
+                        <pre><code data-trim contenteditable>
+{% if not request.user.is_authenticated %}
+    <li><a href="{% url 'login' %}">Logowanie</a></li>
+    <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
+{% else %}
+    <li><a href="#">{{ request.user }}</a></li>
+    <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+{% endif %}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Przypomnienie hasła</h2>
+                        <p>W pliku users/urls.py dodajemy:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^password/reset$',
+    auth_views.password_reset,
+    {'template_name': 'form.html', 'post_reset_redirect': '/'},
+    name='password_reset'),
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Templatka logowania</h2>
+                        <p>Generyczna templatka form.html przestaje być wystarczająca dla logowania,
+                            musimy dodać jeden link. <br>Kopiujemy form.html - > login.html oraz dodajemy link</p>
+                        <pre><code data-trim contenteditable>
+<a href="{% url 'password_reset' %}">Reset hasła</a>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Potwierdzenie zmiany hasła</h2>
+                        <p>W pliku users/urls.py dodajemy:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^password/reset/confirm/(?P&lt;uidb64&gt;[0-9A-Za-z_\-]+)/'
+    r'(?P&lt;token&gt;[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    auth_views.password_reset_confirm,
+    {'template_name': 'password_reset_confirm.html'},
+    name='password_reset_confirm'),
+                        </code></pre>
+                        <p>
+                            W pliku templates tworzymy templatkę 'password_rest_confirm.html'
+                        </p>
+                        https://gist.github.com/tomaszwozniak/042c2eeef67f27d76441
+                    </section>
+                    <section>
+                        <h2>Udajemy wysyłanie maili</h2>
+                        <p>Dla celów deweloperskich zmieniamy w pliku settings.py email backend</p>
+                        <pre><code data-trim contenteditable>
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'fake_emails')
+                        </code></pre>
+                        <p>Tworzymy w głównej aplikacji katalog 'fake_emails'</p>
+                    </section>
+                    <section>
+                        <h2>Próbujemy odebrać maila</h2>
+                        <p>Powinien się pojawić jako plik w katalogu 'fake_emails'</p>
+                    </section>
+                    <section>
+                        <h2>Tworzymy widok "Complete"</h2>
+                        <p>W pliku users/urls.py dodajemy:</p>
+                        <pre><code data-trim contenteditable>
+url(r'^password/reset/complete$',
+    auth_views.password_reset_complete,
+    {'template_name': 'password_reset_complete.html'},
+    name='password_reset_complete'),
+                        </code></pre>
+                        <p>Dodajemy ostatnią templatkę do katalogu templates 'password_reset_complete.html'</p>
+                        https://gist.github.com/tomaszwozniak/db357d25d340a50e2c08
+                    </section>
+				</section>
 
 			</div>
 
