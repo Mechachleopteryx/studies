@@ -1582,20 +1582,6 @@ from django.contrib.auth import views as auth_views
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Context processor</h2>
-                        - globalne dodawanie zmiennych do templatek
-                    </section>
-                     <section>
-                        <h2>Dodajemy context processor do settingsów</h2>
-                        <pre><code data-trim contenteditable>
-...
-            'context_processors': [
-                'django.core.context_processors.request',
-...
-
-                        </code></pre>
-                    </section>
-                    <section>
                         <h2>Wyświetlamy imię zalogowanego usera</h2>
                         W templates/menu.html dodajemy:
                         <pre><code data-trim contenteditable>
@@ -1615,19 +1601,6 @@ from django.contrib.auth import views as auth_views
 url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
 ...
 
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Porządkujemy menu</h2>
-                        <p>W pliku templates/menu.html dodajemy link do wylogowania. Ukrywamy linki w zależności od potrzeby</p>
-                        <pre><code data-trim contenteditable>
-{% if not request.user.is_authenticated %}
-    <li><a href="{% url 'login' %}">Logowanie</a></li>
-    <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
-{% else %}
-    <li><a href="#">{{ request.user }}</a></li>
-    <li><a href="{% url 'logout' %}">Wyloguj</a></li>
-{% endif %}
                         </code></pre>
                     </section>
                     <section>
@@ -1687,6 +1660,114 @@ url(r'^password/reset/complete$',
                         </code></pre>
                         <p>Dodajemy ostatnią templatkę do katalogu templates 'password_reset_complete.html'</p>
                         https://gist.github.com/tomaszwozniak/db357d25d340a50e2c08
+                    </section>
+                    <section>
+                        <h2>Uprawnienia</h2>
+                        <pre><code data-trim contenteditable>
+{% if request.user.is_authenticated %}
+    Wyświetlamy zawartość dla zalogowanego użytkownika
+{% else %}
+    Wyświetlamy zawartość dla anonimowanego użytkownika
+{% endif %}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Uprawnienia</h2>
+                        <p>Sprawdzamy czy użytkownik jest superuserem</p>
+                        <pre><code data-trim contenteditable>
+{% if request.user.is_super_user %}
+    Wyświetlamy zawartość dla admina
+{% else %}
+    Wyświetlamy zawartość dla reszty
+{% endif %}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Access Control List</h2>
+                        <p>Szczegółowa kontrola dostępu</p>
+                        <p>Panel admina - sekcja users</p>
+
+                        [zdjecie]
+                    </section>
+                    <section>
+                        <h2>Zastosowanie w template</h2>
+                        <pre><code data-trim contenteditable>
+{% if perms.post.add_post %}
+   Link
+{% endif %}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Blokowanie dostępu do widoku</h2>
+                        <pre><code data-trim contenteditable>
+url(r'^add/$',
+        permission_required('post.add_post', login_url='/user/login')
+        (views.PostCreateView.as_view()),
+        name='add_post'),
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Context processor</h2>
+                        - globalne dodawanie zmiennych do templatek
+                    </section>
+                    <section>
+                        <h2>Własny context processor</h2>
+                        <p>w katalogu users tworzymy plik context_processors.py</p>
+                        <pre><code data-trim contenteditable>
+def ip_address_processor(request):
+    return {'ip_address': request.META['REMOTE_ADDR']}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Dodajemy context processor do settingsów</h2>
+                        <pre><code data-trim contenteditable>
+...
+            'context_processors': [
+                'users.context_processors.ip_address_processor',
+...
+
+                    </code></pre>
+                    </section>
+                    <section>
+                        <h2>Dodajemy context processor do settingsów</h2>
+                        <pre><code data-trim contenteditable>
+...
+            'context_processors': [
+                'django.core.context_processors.request',
+...
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Sesje</h2>
+                        <p>Informacja o zalogowanym użytkowniku zostaje zapisywana w sesji</p>
+                        <p>Domyślny silnik - baza danych</p>
+                        <p>Użytkownik posiada w przeglądarce ciasteczko z id sesji</p>
+                        <p>Pozostałe informacje są pobierane z bazy danych</p>
+                        <p>Dostęp do sesji mamy poprzez obiekt request</p>
+                    </section>
+                    <section>
+                        <h2>Obiekt sesji działa jak słownik</h2>
+                        <pre><code data-trim contenteditable>
+# Pobranie klucza 'fav_color'
+request.session['fav_color']
+# Przypisanie wartości do klucza 'fav_color'
+request.session['fav_color'] = 'blue'
+# Usunięcie klucza z sesji
+del request.session['fav_color']
+# Pobranie klucza z domyślną wartościa jeżeli go nie ma
+request.session.get('fav_color', 'red')
+# Pobranie oraz usunięcie klucza z sesji
+request.session.pop('fav_color')
+# Czyszczenie całej sesji
+request.session.flush()
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Dostęp do sesji w template</h2>
+                        <pre><code data-trim contenteditable>
+{{ request.session.fav_color }}
+                        </code></pre>
                     </section>
 				</section>
 
