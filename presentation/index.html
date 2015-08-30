@@ -1456,6 +1456,9 @@ def clean_full_name(self):
                     <section>
                         <h2>Przypomnienie</h2>
                         <p>Link do gotowego projektu blog którego robiliśmy na poprzednich zajęciach:</p>
+                        <a href="https://github.com/tomaszwozniak/studiesv2/archive/development.zip">
+                            https://github.com/tomaszwozniak/studiesv2/archive/development.zip
+                        </a>
                     </section>
                     <section>
                         <h2>Przydatne komendy</h2>
@@ -1523,7 +1526,7 @@ from django.http import Http404
 Class MyView(DetailView):
     def dispatch(self, request, *args, **kwargs):
         if not something:
-            return Http404
+            raise Http404
                         </code></pre>
                     </section>
                     <section>
@@ -1697,6 +1700,12 @@ python manage.py startapp users
                         <p>... oraz rejestrujemy ją w pliku settings.py</p>
                     </section>
                     <section>
+                        <h2>Wbudowane widoki django</h2>
+                        <li>Rejestracja</li>
+                        <li>Logowanie</li>
+                        <li>Przypomnienie hasła</li>
+                    </section>
+                    <section>
                         <h2>Dodajemy formularz rejestracji</h2>
                         <p>Importujemy formularz, klase User oraz widok Create</p>
                         <pre><code data-trim contenteditable>
@@ -1781,6 +1790,12 @@ from django.contrib.auth import views as auth_views
     url(r'^login/$', auth_views.login,
         {'template_name': 'form.html'}, name='login'),
                         </code></pre>
+                        W pliku settings.py:
+                        <pre><code data-trim contenteditable>
+LOGIN_REDIRECT_URL = '/'
+                        </code></pre>
+
+
                     </section>
                     <section>
                         <h2>Dodajemy link do menu</h2>
@@ -1874,12 +1889,25 @@ url(r'^password/reset/complete$',
                     </section>
                     <section>
                         <h2>Uprawnienia</h2>
+                        <p>Wyświetlanie w templatce</p>
                         <pre><code data-trim contenteditable>
 {% if request.user.is_authenticated %}
     Wyświetlamy zawartość dla zalogowanego użytkownika
 {% else %}
     Wyświetlamy zawartość dla anonimowanego użytkownika
 {% endif %}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Uprawnienia</h2>
+                        <p>Warunki w widokach</p>
+                        <pre><code data-trim contenteditable>
+from django.http import Http404
+
+Class MyView(DetailView):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            raise Http404
                         </code></pre>
                     </section>
                     <section>
@@ -1909,12 +1937,23 @@ url(r'^password/reset/complete$',
                         </code></pre>
                     </section>
                     <section>
-                        <h2>Blokowanie dostępu do widoku</h2>
+                        <h2>Blokowanie dostępu do całego widoku</h2>
                         <pre><code data-trim contenteditable>
 url(r'^add/$',
         permission_required('post.add_post', login_url='/user/login')
         (views.PostCreateView.as_view()),
         name='add_post'),
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Sprawdzanie uprawnień w widoku</h2>
+                        <pre><code data-trim contenteditable>
+from django.http import Http404
+
+Class MyView(DetailView):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.has_perm('post.add_post'):
+            raise Http404
                         </code></pre>
                     </section>
                     <section>
@@ -1940,7 +1979,15 @@ def ip_address_processor(request):
                     </code></pre>
                     </section>
                     <section>
-                        <h2>Dodajemy context processor do settingsów</h2>
+                        <h2>Wyświetlamy w template</h2>
+                        <pre><code data-trim contenteditable>
+{{ ip_address }}
+
+                    </code></pre>
+                    </section>
+                    <section>
+                        <h2>Używamy wbudowanego context processora</h2>
+                        <p>Dzięki niemu otrzymamy możliwość dostępu do obiektu request w template</p>
                         <pre><code data-trim contenteditable>
 ...
             'context_processors': [
