@@ -2027,6 +2027,41 @@ request.session.flush()
 {{ request.session.fav_color }}
                         </code></pre>
                     </section>
+                    <section>
+                        <h2>Zadanie nr 1: Uprawnienia</h2>
+                        <p>1. Uporządkuj elementy zgodnie z uprawnieniami</p>
+                        <p>- Logowanie i Rejestracja - widoczne tylko dla niezalogowanych</p>
+                        <p>- Informacja o zalogowanym użytkowniku tylko dla zalogowanych</p>
+                        <p>- Dodawanie posta tylko dla użytkowników z uprawnieniami "add_post". Ukryj link dla reszty oraz zabezpiecz widok</p>
+                    </section>
+                    <section>
+                        <h2>Zadanie nr 2: Lista użytkowników</h2>
+                        <p>1. Utwórz stronę z listą użytkowników (ListView)</p>
+                        <p>2. Zmodyfikuj get_queryset aby wyświetlać tylko aktywnych użytkowników (is_active=True)</p>
+                        <p>3. Dodaj link do menu głównego widoczny tylko dla superuserów</p>
+                        <p>4. Dostęp do widoku powinien być tylko dla superuserów</p>
+                    </section>
+                    <section>
+                        <h2>Zadanie nr 3: Contex processor</h2>
+                        <p>1. Utwórz i wyświetl w layout.html context processor który zwróci dzisiejszą datę</p>
+                    </section>
+                    <section>
+                        <h2>Zadanie nr 4: Contex processor + sesja</h2>
+                        <p>1. Napisz context processor który sprawdzi czy użytkownik był już na stronie.</p>
+                        <p>2. Zapisz w sesji odpowiednią informacje (Np. session['visited'] = True)</p>
+                        <p>3. Jeżeli użytkownik pojawił się drugi raz wyświet tekst "Miło Cię widzieć ponownie".</p>
+                    </section>
+                    <section>
+                        <h2>Zadanie nr 5: DetailView</h2>
+                        <p>1. Zobacz w dokumentacji jak użyć DetailView - czyli widok który posłuży do wyświetlania danych obiektu</p>
+                        <a href="https://docs.djangoproject.com/en/1.8/ref/class-based-views/generic-display/">
+                            https://docs.djangoproject.com/en/1.8/ref/class-based-views/generic-display/
+                        </a>
+                        <p>2. Utwórz stronę profil użytkownika (pownna przyjmować id jako parametr w url)</p>
+                        <p>3. Wyświetl na niej podstawowe dane: "first_name", "last_name", "email"</p>
+                        <p>4. Zmodyfikuj listę z zadania nr 2 aby można było kliknąć na imię użytkownika i przejść do tego profilu</p>
+                        <p>4. Zastosuj analogiczne uprawnienia jak w zadaniu 2.</p>
+                    </section>
 
 				</section>
 
