@@ -1469,7 +1469,7 @@ source env/bin/activate # za każdym razem w nowej zakładce !!!
                         </code></pre>
                         <p>Wchodzimy do projektu oraz instalujemy zależności</p>
                                                 <pre><code data-trim contenteditable>
-co studies
+cd studies
 pip install -r requirements.pip
                         </code></pre>
                         <p>Uruchamiamy serwer (również jak nam padnie)</p>
@@ -1507,14 +1507,14 @@ python manage.py runserver 0.0.0.0:8080
                         <h2>dispatch</h2>
                         <p>Przykłady dziedziczenia</p>
                         <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(DetailView):
     def dispatch(self, request, *args, **kwargs):
         # Wykonujemy kod przed dispatch "djangowym"
         return super(MyView, self).dispatch(
              request, *args, **kwargs)
                         </code></pre>
                          <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(DetailView):
     def dispatch(self, request, *args, **kwargs):
         disp =  super(MyView, self).dispatch(
              request, *args, **kwargs)
@@ -1523,7 +1523,7 @@ Class MyView(DetailView):
                         </code></pre>
                         <pre><code data-trim contenteditable>
 from django.http import Http404
-Class MyView(DetailView):
+class MyView(DetailView):
     def dispatch(self, request, *args, **kwargs):
         if not something:
             raise Http404
@@ -1533,7 +1533,7 @@ Class MyView(DetailView):
                         <h2>GET</h2>
                         <p>Wszystkie requesty typu GET. Metoda która zostanie uruchomiona po dispatch w zależności od typu requesta</p>
                         <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(DetailView):
     def get(self, request, *args, **kwargs):
         return super(MyView, self).get(request, *args, **kwargs)
                         </code></pre>
@@ -1542,7 +1542,7 @@ Class MyView(DetailView):
                         <h2>POST</h2>
                         <p>Wszystkie requesty typu POST. Metoda która zostanie uruchomiona po dispatch w zależności od typu requesta</p>
                         <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(DetailView):
     def post(self, request, *args, **kwargs):
         return super(MyView, self).post(request, *args, **kwargs)
                         </code></pre>
@@ -1568,10 +1568,9 @@ Class MyView(DetailView):
                     <section>
                         <h2>Modyfikacja contextu</h2>
                         <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(DetailView):
     def get_context_data(self, *args, **kwargs):
-        ctx = super(
-                RestrictionsEditView, self).get_context_data(*args, **kwargs)
+        ctx = super(MyView, self).get_context_data(*args, **kwargs)
         ctx['nazwa_zmiennej'] = 1
         # w template bedziemy mieli do niej dostep pod {{ nazwa_zmiennej }}
         return ctx
@@ -1638,9 +1637,9 @@ Class MyView(DetailView):
                         <h2>form kwargs</h2>
                         <p>Customowe inicjowanie formularza</p>
                         <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(FormView):
     def get_form_kwargs(self):
-        kwargs = super(MyEditView, self).get_form_kwargs()
+        kwargs = super(MyView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
                         </code></pre>
@@ -1648,17 +1647,17 @@ Class MyView(DetailView):
                     <section>
                         <h2>Sprawdzanie formularza</h2>
                         <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(FormView):
     def form_valid(self, form):
         f_valid =  super(
-            MyEditView, self).form_valid(*args, **kwargs)
+            MyView, self).form_valid(*args, **kwargs)
         return f_valid
                         </code></pre>
                         <pre><code data-trim contenteditable>
-Class MyView(DetailView):
+class MyView(FormView):
     def form_invalid(self, form):
         f_invalid =  super(
-            MyEditView, self).form_invalid(*args, **kwargs)
+            MyView, self).form_invalid(*args, **kwargs)
         return f_invalid
                         </code></pre>
                     </section>
@@ -1682,8 +1681,9 @@ Class MyView(DetailView):
                     <section>
                         <h2>List view</h2>
                         <pre><code data-trim contenteditable>
-def get_queryset(self):
-    return self.model.objects.filter(is_active=False)
+class MyView(ListView):
+    def get_queryset(self):
+        return self.model.objects.filter(is_active=False)
                         </code></pre>
                     </section>
                 </section>
@@ -1738,7 +1738,7 @@ urlpatterns = patterns(
     url(r'^create/$', views.UserCreateView.as_view(), name='create_user'),
 )
                         </code></pre>
-                        <p>Rejestrujemy go głównym urls (blog/urls.py)</p>
+                        <p>Dodajemy linie do głównego pliku urls (blog/urls.py)</p>
                         <pre><code data-trim contenteditable>
 ...
 url(r'^user/', include('users.urls')),
@@ -1772,7 +1772,7 @@ class UserCreateView(CreateView):
                     </section>
                     <section>
                         <h2>Dodajemy link do menu</h2>
-                        <p>W pliku templates/menu.html zmieniamy blok ul</p>
+                        <p>W pliku templates/menu.html zmieniamy blok ul </br> (między <-- Placeholder -->)</p>
                         <pre><code data-trim contenteditable>
 <ul class="nav navbar-nav navbar-right">
     <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
@@ -1799,7 +1799,7 @@ LOGIN_REDIRECT_URL = '/'
                     </section>
                     <section>
                         <h2>Dodajemy link do menu</h2>
-                        <p>W pliku templates/menu.html dodajemy link do logowania</p>
+                        <p>W pliku templates/menu.html dodajemy link do logowania (podmieniamy placeholder)</p>
                         <pre><code data-trim contenteditable>
 <ul class="nav navbar-nav navbar-right">
     <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
@@ -1818,6 +1818,20 @@ LOGIN_REDIRECT_URL = '/'
 </ul>
 
                         </code></pre>
+                        <p>niestety request jest pusty</p>
+                    </section>
+                    <section>
+                        <h2>zmienne globalne w template</h2>
+                        <p>Dodajemy wpis do pliku settings w sekcji template</p>
+                        <pre><code data-trim contenteditable>
+...
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.request'
+            ],
+...
+
+                        </code></pre>
                     </section>
                     <section>
                         <h2>Wyloguj</h2>
@@ -1826,6 +1840,19 @@ LOGIN_REDIRECT_URL = '/'
 ...
 url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
 ...
+
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Dodajemy link</h2>
+                        W templates/menu.html rozszerzamy menu:
+                        <pre><code data-trim contenteditable>
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="#">{{ request.user }}</a></li>
+    <li><a href="{% url 'create_user' %}">Rejestracja</a></li>
+    <li><a href="{% url 'login' %}">Logowanie</a></li>
+    <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+</ul>
 
                         </code></pre>
                     </section>
@@ -1842,10 +1869,11 @@ url(r'^password/reset$',
                     <section>
                         <h2>Templatka logowania</h2>
                         <p>Generyczna templatka form.html przestaje być wystarczająca dla logowania,
-                            musimy dodać jeden link. <br>Kopiujemy form.html - > login.html oraz dodajemy link</p>
+                            musimy dodać jeden link. <br>Kopiujemy form.html - > login.html oraz dodajemy link między tagami form</p>
                         <pre><code data-trim contenteditable>
 <a href="{% url 'password_reset' %}">Reset hasła</a>
                         </code></pre>
+                        Musimy również zmienić odwołanie do niej w pliku users/urls.py przy url "login"
                     </section>
                     <section>
                         <h2>Potwierdzenie zmiany hasła</h2>
@@ -1889,7 +1917,7 @@ url(r'^password/reset/complete$',
                     </section>
                     <section>
                         <h2>Uprawnienia</h2>
-                        <p>Wyświetlanie w templatce</p>
+                        <p>Warunki w templatce</p>
                         <pre><code data-trim contenteditable>
 {% if request.user.is_authenticated %}
     Wyświetlamy zawartość dla zalogowanego użytkownika
@@ -1926,7 +1954,7 @@ Class MyView(DetailView):
                         <p>Szczegółowa kontrola dostępu</p>
                         <p>Panel admina - sekcja users</p>
 
-                        [zdjecie]
+                        <img src="/permissions.png"/>
                     </section>
                     <section>
                         <h2>Zastosowanie w template</h2>
@@ -1984,17 +2012,6 @@ def ip_address_processor(request):
 {{ ip_address }}
 
                     </code></pre>
-                    </section>
-                    <section>
-                        <h2>Używamy wbudowanego context processora</h2>
-                        <p>Dzięki niemu otrzymamy możliwość dostępu do obiektu request w template</p>
-                        <pre><code data-trim contenteditable>
-...
-            'context_processors': [
-                'django.core.context_processors.request',
-...
-
-                        </code></pre>
                     </section>
                     <section>
                         <h2>Sesje</h2>
