@@ -141,10 +141,10 @@ blog
                     <section>
 						<h2>Tworzymy projekt</h2>
                         <pre><code data-trim contenteditable>
-virtualenv env
-source env/bin/activate
-pip install django
-django-admin.py startproject blog
+virtualenv env # tworzy virtualne środowisko, wykonujemy tylko raz!
+source env/bin/activate # wykonujemy za każdym razem w nowej zakładce
+pip install django # tylko raz
+django-admin.py startproject blog # tylko raz
 					</code></pre>
 					</section>
                     <section>
@@ -239,7 +239,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'post'
+    'post',
 )
 					</code></pre>
 					</section>
